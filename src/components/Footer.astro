@@ -3,10 +3,39 @@ const year = new Date().getFullYear();
 ---
 <footer>
     <div>
+        <div>
+            <ul class="icons">
+                <li><a href="https://github.com/JI-0" class="foot-btn"><span class="git-icon">GitHub</span></a></li>
+                <li><a href="mailto: janivkovic11111@gmail.com" class="foot-btn"><span class="mail-icon">Email</span></a></li>
+            </ul>
+        </div>
         <small>&copy; {year} Milky-Way by <a href="https://github.com/JI-0">JI-0</a> and <a href="https://github.com/ttomczak3">ttomczak</a>. All Rights Reserved.</small>
     </div>
 </footer>
 <style>
+    ul.icons {
+		cursor: default;
+		list-style: none;
+	}
+
+    ul.icons li {
+        display: inline-block;
+        padding: 0 0.75rem 0 0;
+    }
+
+    .foot-btn {
+        display: flex;
+        padding: 20px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        border: 5px solid black;
+    }
+
+    .foot-btn:hover {
+        background-color: lightskyblue;
+    }
+
     div {
         margin: 4rem 0;
         text-align: center;

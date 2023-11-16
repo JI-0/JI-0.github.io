@@ -82,6 +82,10 @@ p {
     content: url("/github-mark-white.svg");
 }
 
+.mail-icon {
+    content: url("/mail-white.svg");
+}
+
 /* Card listing */
 .link-card-grid {
     display: grid;
@@ -126,6 +130,10 @@ html.light {
 
 .light .git-icon {
     content: url("/github-mark.svg");
+}
+
+.light .mail-icon {
+    content: url("/mail.svg");
 }
 
 
