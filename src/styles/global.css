@@ -86,6 +86,24 @@ p {
     content: url("/mail-white.svg");
 }
 
+/* Footer */
+.foot-btn {
+    display: flex;
+    padding: 20px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+.foot-btn:hover {
+    background-color: lightskyblue;
+}
+
+.light .foot-btn {
+    border: 5px solid black;
+}
+
 /* Card listing */
 .link-card-grid {
     display: grid;
