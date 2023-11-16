@@ -78,6 +78,10 @@ p {
     margin: 0 13px;
 }
 
+.git-icon {
+    content: url("/github-mark-white.svg");
+}
+
 /* Card listing */
 .link-card-grid {
     display: grid;
@@ -119,6 +123,11 @@ html.light {
 .light button:hover {
     color: #fdebf3;
 }
+
+.light .git-icon {
+    content: url("/github-mark.svg");
+}
+
 
 /* Media Query */
 @media only screen and (max-width: 600px) {
