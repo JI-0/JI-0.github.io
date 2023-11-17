@@ -45,6 +45,15 @@ p {
     text-align: center;
 }
 
+
+/* Code */
+.code-box {
+    background-color: black;
+    padding: 1px 4px 1px 4px;
+    border-radius: 6px;
+}
+
+
 /* Navigation Bar */
 .nav-bar {
     display: grid;
