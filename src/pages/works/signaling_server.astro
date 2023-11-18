@@ -17,67 +17,27 @@ const pageTitle = "WebRTC signaling server in Go";
     <a href="https://github.com/JI-0/WebRTC_SignalingServer" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
     <h2>Problem/Challenge</h2>
     <p>
-        As part of my working on the mobile game Portal Ninja with Cloud Base Games Ltd. I was tasked to create a level builder,
-        which would allow for simple and fast creation of levels that both level designers, as well as players could use. It 
-        had to provide variety in terms of rooms, elements and assets being used, but also intuitive and simple level iteration.
+        As part of my research at Sophia university (上智大学) I had to create a signaling server in order to relay ICE candidates 
+        between the peers in a way that one peer can request to be promoted to a streamer and the others can join and watch the 
+        stream. 
     </p>
     <h2>Solution</h2>
     <p>
-        I decided that the optimal solution for this would be to create a level builder, where levels could be made with a drawing
-        style application, where each bloc/pixel would represent a 4x4 area in terms of the game level. The levels are built in 
-        a few steps. First the level shape is determined with drawing in the black area, or by generating one at random or with a 
-        seed. Then, the corridors are created (blue blocks), made wither by hand or generated. Next based on the corridors drawn 
-        in the blueprint, rooms are generated with passages to ensure they are all accessible either through the corridors or 
-        other rooms. Finally, the assets are chosen for the level with other options before the whole level is generated.
+        I decided to create the server using Go, as it is very well suited for networking and building systems. The server uses 
+        a "manager" which can create peers as they join and manage the connections between them. If a peer requests to join a 
+        stream, the server provides a streamer at random, but that can easily be expanded in a way that the peer can request a 
+        specific stream. The server then acts as a relay to move the ICE candidates between the peers and creates a peer to peer 
+        connection. After that the peer receiving the stream is disconnected, but the streaming (upgraded) peer remains connected 
+        and waits for new peers.
     </p>
-    <p>
-        The project is not publicly available, but some code snippets from the project are available below:
-    </p>
-    <div class="code-box">
-    <Code code={`
-func get_corridors(img) -> Array:
-    var corridors : Array = []
-    img.lock()
-    for l in range(50):
-        for m in range(50):
-            if img.get_pixel(l, m) == Color.blue:
-                corridors.append(Vector2(l, m))
-    img.unlock()
-    return corridors
-    `} lang="gdscript" />
-    <Code code={`
-func remove_done_chunks():
-    var opts = get_options()
-    img0.lock()
-    while opts.size() > 0:
-        
-        find_neighbor_cells(opts[0], opts)
-        for i in recursive_buff:
-            opts.erase(i)
-        if recursive_buff.size() < 15 +  80 * get_node("densityHScrollBar").value / 10:
-            for i in recursive_buff:
-                img0.set_pixelv(i, Color.green)
-        recursive_buff = []
-    img0.unlock()
-
-func find_neighbor_cells(pos, data):
-    recursive_buff.append(pos)
-    if recursive_buff.size() < 100:
-        if not recursive_buff.has(Vector2(pos.x - 1, pos.y)) and data.has(Vector2(pos.x - 1, pos.y)):
-            find_neighbor_cells(Vector2(pos.x - 1, pos.y), data)
-        if not recursive_buff.has(Vector2(pos.x + 1, pos.y)) and data.has(Vector2(pos.x + 1, pos.y)):
-            find_neighbor_cells(Vector2(pos.x + 1, pos.y), data)
-        if not recursive_buff.has(Vector2(pos.x, pos.y - 1)) and data.has(Vector2(pos.x, pos.y - 1)):
-            find_neighbor_cells(Vector2(pos.x, pos.y - 1), data)
-        if not recursive_buff.has(Vector2(pos.x, pos.y + 1)) and data.has(Vector2(pos.x, pos.y + 1)):
-            find_neighbor_cells(Vector2(pos.x, pos.y + 1), data)
-    `} lang="gdscript" />
-    </div>
     <h2>Demo</h2>
     <p>
-        The project is available as a live demo through the link below. Please be aware it might take a minute or two to load as 
-        it was originally intended and ran on mobile devices (iOS, Android) and the small part of code was then ported to run 
-        on HTML.
+        The project is publicly available on GitHub <a href="https://github.com/JI-0/WebRTC_SignalingServer">here</a>.
+    </p>
+    <p>
+        A demo is available under the Posts, WebRTC testing. The post is a collection of multiple WebRTC projects created to work 
+        together and act as a demo of testing WebRTC for streaming purposes. You may take a look 
+        <a href="/posts/webrtc">here</a>.
     </p>
     <p>
         Please feel free to take a look!
