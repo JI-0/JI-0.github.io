@@ -147,13 +147,13 @@ html.light {
     color: #1e1e2e; 
 }
 
-.light button {
+/* .light .portfolio-button {
     color: #1e1e2e;
 }
 
-.light button:hover {
+.light .portfolio-button:hover {
     color: #fdebf3;
-}
+} */
 
 .light .git-icon {
     content: url("/github-mark.svg");

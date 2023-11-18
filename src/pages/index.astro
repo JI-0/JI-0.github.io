@@ -26,7 +26,7 @@ const pageTitle = "Jan Ivkovic";
     </p>
     <div class="button">
         <a href="/works/">
-            <button>My portfolio</button>
+            <button class="portfolio-button">My portfolio</button>
         </a>
     </div>
     <h2>Skills</h2>
@@ -89,17 +89,17 @@ const pageTitle = "Jan Ivkovic";
     }
 
     /* Button */
-    button {
+    .portfolio-button {
         background: rgba(0,0,0,0);
         border: 2px solid #78c2ad;
         border-radius: 8px;
-        color: #fdebf3;
+        color: #78c2ad;
         font: 600 16px 'Josefin Sans', sans-serif;
         padding: 8px 16px;
         transition: background-color 0.4s, color 0.4s;
     }
 
-    button:hover {
+    .portfolio-button:hover {
         background-color: #78c2ad;
         color: #1e1e2e;
         cursor: pointer;
