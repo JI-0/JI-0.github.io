@@ -1,19 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { Code } from 'astro:components';
-const pageTitle = "Level builder";
+const pageTitle = "WebRTC signaling server in Go";
 ---
 <Layout pageTitle={pageTitle}>
     <div class="gif">
-        <img class="main-img" width="500" height="259" alt="LevelBuilder" src="/level-builder.png"/>
+        <img class="main-img" width="500" height="259" alt="SignalingServer" src="/signaling-server.svg"/>
     </div>
-    <h1>Level builder</h1>
-    <small>GDScript</small>
-    <small>Randomization and seeds</small>
-    <small>Vector math</small>
+    <h1>WebRTC signaling server</h1>
+    <small>Go/Golang</small>
+    <small>Server</small>
+    <small>Relay</small>
+    <small>Trickle ICE</small>
     <p></p>
-    <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
-    <!-- <a href="" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a> -->
+    <!-- <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a> -->
+    <a href="https://github.com/JI-0/WebRTC_SignalingServer" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
     <h2>Problem/Challenge</h2>
     <p>
         As part of my working on the mobile game Portal Ninja with Cloud Base Games Ltd. I was tasked to create a level builder,
@@ -81,7 +82,8 @@ func find_neighbor_cells(pos, data):
     <p>
         Please feel free to take a look!
     </p>
-    <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
+    <!-- <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a> -->
+    <a href="https://github.com/JI-0/WebRTC_SignalingServer" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
 </Layout>
 <style>
     /* Main image */
