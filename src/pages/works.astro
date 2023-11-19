@@ -25,32 +25,32 @@ const pageTitle = "Works";
     <h2>Projects</h2>
     <ul role="list" class="link-card-grid">
         <Card
+            href="/works/webrtc_dummy_client"
+            image="/webrtc-dummy-client.svg"
+            title="WebRTC Dummy Client"
+            body="A WebRTC dummy client testing suite for testing the limits of WebRTC for streaming"
+            badges={["/live.svg", "/github-mark.svg"]}
+        />
+        <Card
             href="/works/signaling_server"
             image="/signaling-server.svg"
-            title="WebRTC signaling server"
+            title="WebRTC Signaling Server"
             body="A WebRTC signaling server written in Go for my research of WebRTC for streaming"
+            badges={["/live.svg", "/github-mark.svg"]}
+        />
+        <Card
+            href="/works/nethogs_analyzer"
+            image="/nethogs-analyzer.png"
+            title="Nethogs Analyzer Script"
+            body="A script for streamlining network traffic data collection from Nethogs"
             badges={["/github-mark.svg"]}
         />
         <Card
             href="/works/level_builder"
             image="/level-builder.png"
-            title="Level builder"
+            title="Level Builder"
             body="A painting style level builder in GDScript"
             badges={["/live.svg", "/code.svg"]}
-        />
-        <Card
-            href="https://github.com/"
-            image="/GitHub.webp"
-            title="Project 3"
-            body="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci"
-            badges={[""]}
-        />
-        <Card
-            href="https://github.com/"
-            image="/GitHub.webp"
-            title="Project 4"
-            body="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci"
-            badges={[""]}
         />
     </ul>
 </Layout>
