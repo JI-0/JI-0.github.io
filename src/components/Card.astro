@@ -19,7 +19,6 @@ let hasBadges = badges[0] !== "" || badges === null
                 {hasBadges ? badges.map((badge) => (
                     <li class="border"><img class="badge" width="24" height="24" src={badge}/></li>
                 )) : <p></p>}
-            </div>
         </div>
 	<h3 class="card-title">
 	    {title}
@@ -43,6 +42,7 @@ let hasBadges = badges[0] !== "" || badges === null
         line-height: 1.4;
         border-radius: 8px;
         color: #fdebf3;
+        text-align: center;
     }
 
     .img {
