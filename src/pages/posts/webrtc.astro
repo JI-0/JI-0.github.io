@@ -3,9 +3,45 @@ import Layout from '../../layouts/Layout.astro';
 import { Code } from 'astro:components';
 const pageTitle = "WebRTC stress testing";
 ---
+<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 <script>
+    console.log('hello');
 
+    document.getElementById("startStreamerBtn").onclick = startStreamer;
+
+    function startStreamer() {
+        document.getElementById("resolution").disabled = true;
+    }
+
+
+    //Chart
+    let packetChart = document.getElementById("packetChart").getContext("2d");
+    
+    const xValues = [...Array(121).keys()];
+    let chart = new Chart(packetChart, {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                label: "Maximum",
+                data: [],
+                borderColor: "green",
+                fill: false
+            },{
+                label: "Average",
+                data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
+                borderColor: "blue",
+                fill: false
+            },{
+                label: "Minimum",
+                data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
+                borderColor: "red",
+                fill: false
+            }]
+        },
+    });
 </script>
+
 <Layout pageTitle={pageTitle}>
     <div class="gif">
         <img class="main-img" width="500" height="259" alt="WebRTC_Stress_Testing" src="/webrtc_experiment.svg"/>
@@ -15,39 +51,55 @@ const pageTitle = "WebRTC stress testing";
     <small>Networking</small>
     <small>Linux</small>
     <p></p>
-    <a href="#demo"><button><img width="20" height="20" src="/live.svg"/> Demo</button></a>
-    <a href="/works"><button><img width="20" height="20" src="/github-mark.svg"/> Projects</button></a>
+    <a href="#demo"><button type="button"><img width="20" height="20" src="/live.svg"/> Demo</button></a>
+    <a href="/works"><button type="button"><img width="20" height="20" src="/github-mark.svg"/> Projects</button></a>
     <h2>Project</h2>
     <p>
-        As part of my working on the mobile game Portal Ninja with Cloud Base Games Ltd. I was tasked to create a level builder,
-        which would allow for simple and fast creation of levels that both level designers, as well as players could use. It 
-        had to provide variety in terms of rooms, elements and assets being used, but also intuitive and simple level iteration.
+        As part of my Master's thesis research on utilizing WebRTC for streaming of content at Sophia university (上智大学) I 
+        created a stress test system in order to analyze the maximum number of peers a streamer client can connect to before 
+        encountering connection issues due to performance and networking limitations.
+    </p>
+    <p>
+        Although traditional streaming systems can support millions of clients as they distribute the stream through many servers, 
+        the proposed alternative model is a more cost efficient solution as the streamer's device is responsible for transmitting 
+        data to subscribers of the stream and uses the WebRTC peer to peer technology to bypass the use of servers, 
+        reducing infrastructure costs. This, however, represents a huge load for the client streaming device, limiting the 
+        number of peers capable to establinsh a reliable connection. For this purpose I created a sort of testing suite 
+        that can test and determine the maximum number of peers that can connect simultaneously without experiencing 
+        networking issues.
     </p>
     <h2>Setup</h2>
     <p>
-        I decided that the optimal solution for this would be to create a level builder, where levels could be made with a drawing
-        style application, where each bloc/pixel would represent a 4x4 area in terms of the game level. The levels are built in 
-        a few steps. First the level shape is determined with drawing in the black area, or by generating one at random or with a 
-        seed. Then, the corridors are created (blue blocks), made wither by hand or generated. Next based on the corridors drawn 
-        in the blueprint, rooms are generated with passages to ensure they are all accessible either through the corridors or 
-        other rooms. Finally, the assets are chosen for the level with other options before the whole level is generated.
+        First the streamer client connects to the server and requests to connect and then waits for subscribers that wish to 
+        connect to the stream. Either a real subscriber client can connect to a stream, or the cummy client system can connect 
+        which creates a new dummy client every second until reaching the desired number of dummy clients (maximum 100). The 
+        dummy client system also monitors the packets being received by all of the active clients, as well as when a new peer 
+        connects until the desired number and then notifies about each second that passes after that. This way we can (also 
+        using timestamps taken of when each packet arrived), calculate the average number of packets received per second 
+        for each peer and determine the average, minimum and maximum.
     </p>
-    <p>
-        The project is not publicly available, but some code snippets from the project are available below:
-    </p>
-    <div class="code-box">
-    </div>
     <h2 id="demo">Demo</h2>
     <p>
-        The project is available as a live demo through the link below. Please be aware it might take a minute or two to load as 
-        it was originally intended and ran on mobile devices (iOS, Android) and the small part of code was then ported to run 
-        on HTML.
+        The demo works by first selecting the stream resolution and starting a "streamer". Then it is possible to create a 
+        "subscriber" client that can observe the stream. To run the test the number of peers should be selected and the 
+        test run.
     </p>
     <p>
-        Please feel free to try it out!
+        Note: the setup only uses a STUN server, not a TURN server so more unusual network configurations or firewalls might 
+        prevent the test from running.
     </p>
-    <br>
+    <h2>Test</h2>
+    <form>
+        <select id="resolution">
+            <option value="640x480">640x480</option>
+            <option value="1280x720">1280x720</option>
+            <option value="1920x1080">1920x1080</option>
+        </select>
+    </form>
+    <p></p>
+    <button id="startStreamerBtn" >Start streamer</button>
 
+    <canvas id="packetChart" style="width:100%;max-width:700px"></canvas>
 </Layout>
 <style>
     html {
