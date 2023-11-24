@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { Code } from 'astro:components';
 const pageTitle = "WebRTC stress testing";
 ---
 <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
@@ -8,10 +7,15 @@ const pageTitle = "WebRTC stress testing";
     console.log('hello');
 
     document.getElementById("startStreamerBtn").onclick = startStreamer;
+    document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
 
     function startStreamer() {
         document.getElementById("resolution").disabled = true;
-    }
+    };
+
+    function connectSubscriber() {
+
+    };
 
 
     //Chart
@@ -79,6 +83,7 @@ const pageTitle = "WebRTC stress testing";
         using timestamps taken of when each packet arrived), calculate the average number of packets received per second 
         for each peer and determine the average, minimum and maximum.
     </p>
+    <br>
     <h2 id="demo">Demo</h2>
     <p>
         The demo works by first selecting the stream resolution and starting a "streamer". Then it is possible to create a 
@@ -98,8 +103,14 @@ const pageTitle = "WebRTC stress testing";
         </select>
     </form>
     <p></p>
-    <button id="startStreamerBtn" >Start streamer</button>
-
+    <button id="startStreamerBtn">Start streamer</button>
+    <div class="gif">
+        <video id="streamer" autoplay playsinline></video>
+    </div>
+    <button id="connectSubscriberBtn">Start subscriber</button>
+    <div class="gif">
+        <video id="subscriber" autoplay playsinline></video>
+    </div>
     <canvas id="packetChart" style="width:100%;max-width:700px"></canvas>
 </Layout>
 <style>
@@ -119,6 +130,20 @@ const pageTitle = "WebRTC stress testing";
         .main-img {
             width: 300px;
             height: 155px;
+        }
+    }
+
+    /* Video */
+    video {
+        background-color: black;
+        margin-bottom: 20px;
+        width: 500px;
+    }
+
+    @media (max-width: 600px) {
+        video {
+            width: 300px;
+            height: 533px;
         }
     }
 
