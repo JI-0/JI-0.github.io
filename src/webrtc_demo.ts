@@ -1,5 +1,7 @@
 // import { Chart } from './chart.js';
 
+import type { HTMLAttributes } from "astro/types";
+
 const uri = "wss://the.testingwebrtc.com:3000";
 let username = "";
 let user_info = "";
@@ -32,6 +34,9 @@ document.getElementById("startStreamerBtn").onclick = startStreamer;
 document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
 const streamerVideo = document.getElementById("streamer") as HTMLVideoElement;
 const subscriberVideo = document.getElementById("subscriber") as HTMLVideoElement;
+const numberOfDummyClientsSlider = document.getElementById("numOfDummyClients") as HTMLInputElement;
+const numberOfDummyClientsTxt = document.getElementById("numDummyClientsTxt") as HTMLParagraphElement;
+numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
 
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -201,6 +206,11 @@ function connectSubscriber() {
         .catch(e => console.error(e));
     };
 };
+
+
+numberOfDummyClientsSlider.oninput = () => {
+    numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
+}
 
 
 //Chart

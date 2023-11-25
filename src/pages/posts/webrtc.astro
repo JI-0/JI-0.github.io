@@ -70,6 +70,13 @@ const pageTitle = "WebRTC stress testing";
     <div class="gif">
         <video id="subscriber" autoplay playsinline></video>
     </div>
+    <p>Dummy clients</p>
+    <div class="sliderContainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="numOfDummyClients">
+    </div>
+    <p id="numDummyClientsTxt">Number of dummy clients: </p>
+    <button id="startDummyClientsBtn">Start dummy cli test</button>
+    vfv
     <canvas id="packetChart" style="width:100%;max-width:700px"></canvas>
 </Layout>
 <style>
@@ -104,6 +111,37 @@ const pageTitle = "WebRTC stress testing";
             width: 300px;
             height: 533px;
         }
+    }
+
+    /* Slider */
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;   
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%; 
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #04AA6D;
+        cursor: pointer;
     }
 
     /* small */
