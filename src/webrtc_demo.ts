@@ -36,7 +36,7 @@ const subscriberVideo = document.getElementById("subscriber") as HTMLVideoElemen
 const numberOfDummyClientsSlider = document.getElementById("numOfDummyClients") as HTMLInputElement;
 const numberOfDummyClientsTxt = document.getElementById("numDummyClientsTxt") as HTMLParagraphElement;
 const currentNumDummyClientsTxt = document.getElementById("currentNumDummyClientsTxt") as HTMLParagraphElement;
-numberOfDummyClientsTxt.innerHTML = "Requested number of dummy clients: " + numberOfDummyClientsSlider.value;
+numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
 
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -236,7 +236,7 @@ function startDummyClients() {
 
 
 numberOfDummyClientsSlider.oninput = () => {
-    numberOfDummyClientsTxt.innerHTML = "Requested number of dummy clients: " + numberOfDummyClientsSlider.value;
+    numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
 };
 
 
