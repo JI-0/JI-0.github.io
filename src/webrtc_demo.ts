@@ -28,6 +28,13 @@ let constraints = {
 };
 
 
+// Analyzer
+let maxK = 0;
+let minT = 16976116344130;
+let maxT = 0;
+let timestampClis = {};
+
+
 document.getElementById("startStreamerBtn").onclick = startStreamer;
 document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
 document.getElementById("startDummyClientsBtn").onclick = startDummyClients;
@@ -211,26 +218,51 @@ function connectSubscriber() {
 
 function startDummyClients() {
     (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = true;
+    numberOfDummyClientsSlider.disabled = true;
     //Start websocket
     analyzerWebsocket = new WebSocket(uriAnalytics);
     
     //Streamer
     analyzerWebsocket.onopen = () => {
-        analyzerWebsocket.send("R\n" + username + "\n" + user_info);
+        analyzerWebsocket.send("R\n" + username + "\n" + numberOfDummyClientsSlider.value);
     };
 
-    streamerWebsocket.onclose = () => {
+    analyzerWebsocket.onclose = () => {
     };
 
-    streamerWebsocket.onmessage = e => {
+    analyzerWebsocket.onmessage = e => {
         let parts = e.data.split("\n");
-        // if (parts[0] == "R") {
-        //     newSubscriber(parts[1]);
-        // } else if (parts[0] == "A") {
-        //     processAnswer(parts[1], JSON.parse(parts[2]));
-        // } else if (parts[0] == "C") {
-        //     processCandidateStreamer(parts[1], JSON.parse(parts[2]));
-        // };
+        if (parts.length != 2) {
+            console.error("Analyzer error");
+        };
+        if (parts[0] == "N") {
+            let minP = 16976116344130;
+            let maxP = 0;
+            let avg = 0;
+            for (let i = 0; i < maxK && i < parseInt(numberOfDummyClientsSlider.value); i++) {
+                let sumOfC = timestampClis[i];
+                let pacPerS = 1000 * sumOfC / (maxT - minT);
+                avg += pacPerS;
+                if (pacPerS < minP) { minP = pacPerS };
+                if (pacPerS > maxP) { maxP = pacPerS };
+            };
+            if (avg != 0) { avg = avg / maxK };
+            chartAddData(maxP, avg, minP);
+            maxK += 1;
+            minT = 16976116344130;
+            maxT = 0;
+            timestampClis = {};
+        } else {
+            let cliI = parseInt(parts[0]);
+            let newT = parseInt(parts[1]);
+            if (newT < minT) { minT = newT };
+            if (newT > maxT) { maxT = newT };
+            if (cliI in timestampClis) {
+                timestampClis[cliI] += 1
+            } else {
+                timestampClis[cliI] = 1
+            };
+        };
     };    
 };
 
