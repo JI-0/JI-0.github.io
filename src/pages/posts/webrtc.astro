@@ -38,6 +38,20 @@ const pageTitle = "WebRTC stress testing";
     const subscriberVideo = document.getElementById("subscriber");
 
 
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    function makeID(length = 16) {
+        let result = '';
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
+
     //Streamer
     streamerWebsocket.onopen = () => {
         streamerWebsocket.send("U\n" + username + "\n" + user_info);
@@ -102,7 +116,7 @@ const pageTitle = "WebRTC stress testing";
 
     //Subscriber
     subscriberWebsocket.onopen = () => {
-        subscriberWebsocket.send("R\n" + "0");
+        subscriberWebsocket.send("R\n" + username);
     };
 
     subscriberWebsocket.onclose = () => {
@@ -118,14 +132,13 @@ const pageTitle = "WebRTC stress testing";
     };
 
     function processOffer(id, offer) {
-        streamer_id = id;
         subscriberPeerConnection = new RTCPeerConnection(RTCConfig);
         subscriberPeerConnection
         .setRemoteDescription(offer)
         .then(() => subscriberPeerConnection.createAnswer())
         .then(sdp => subscriberPeerConnection.setLocalDescription(sdp))
         .then(() => {
-            subscriberWebsocket.send("A\n" + streamer_id + "\n" + JSON.stringify(subscriberPeerConnection.localDescription));
+            subscriberWebsocket.send("A\n" + id + "\n" + JSON.stringify(subscriberPeerConnection.localDescription));
         });
 
         //Stream
@@ -136,7 +149,7 @@ const pageTitle = "WebRTC stress testing";
         //Candidate
         subscriberPeerConnection.onicecandidate = e => {
             if (e.candidate) {
-                subscriberWebsocket.send("C\n" + streamer_id + "\n" + JSON.stringify(e.candidate));
+                subscriberWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
             };
         };
     }
@@ -172,6 +185,8 @@ const pageTitle = "WebRTC stress testing";
                 constraints.video.height = {exact: 640}
             };
         };
+        //Set username
+        username = makeID()
         //Start websocket
         streamerWebsocket = new WebSocket(uri);
         //Setup streaming
