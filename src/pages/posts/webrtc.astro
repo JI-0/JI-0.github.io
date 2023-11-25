@@ -4,17 +4,187 @@ const pageTitle = "WebRTC stress testing";
 ---
 <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 <script>
-    console.log('hello');
+    const uri = "wss://the.testingwebrtc.com:3000";
+    let username = "";
+    let user_info = "";
+    let streamerWebsocket;
+    let subscriberWebsocket;
+    let analyzerWebsocket;
+
+    
+    const streamerPeerConnections = {};
+    let subscriberPeerConnection;
+    const RTCConfig = {
+        iceServers: [
+            {
+                // "urls": "turn:test.testingwebrtc.com:443",
+                // 'username': 'test',
+                // 'credential': 'key1234567890',
+                "urls": "stun:stun.l.google.com:19302",
+            }
+        ]
+    };
+    //Stream constraints
+    let constraints = {
+        video: { facingMode: "user", width: {exact: 640}, height: {exact: 480} },
+        mimeType: 'video/VP8'
+        // audio: true
+    };
+
 
     document.getElementById("startStreamerBtn").onclick = startStreamer;
     document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
+    const streamerVideo = document.getElementById("streamer");
+    const subscriberVideo = document.getElementById("subscriber");
 
+
+    //Streamer
+    streamerWebsocket.onopen = () => {
+        streamerWebsocket.send("U\n" + username + "\n" + user_info);
+    };
+
+    streamerWebsocket.onclose = () => {
+    };
+
+    streamerWebsocket.onmessage = e => {
+        let parts = e.data.split("\n", 5);
+        if (parts[0] == "R") {
+            newSubscriber(parts[1]);
+        } else if (parts[0] == "A") {
+            processAnswer(parts[1], JSON.parse(parts[2]));
+        } else if (parts[0] == "C") {
+            processCandidateStreamer(parts[1], JSON.parse(parts[2]));
+        };
+    };
+
+    function newSubscriber(id) {
+        const peerConnection = new RTCPeerConnection(RTCConfig);
+        streamerPeerConnections[id] = peerConnection;
+
+        //Set streaming
+        let stream = streamerVideo.srcObject;
+        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+
+        //Candidate
+        peerConnection.onicecandidate = e => {
+            if (e.candidate) {
+                streamerWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
+            };
+        };
+
+        //Create and send offer
+        peerConnection
+        .createOffer()
+        .then(sdp => peerConnection.setLocalDescription(sdp))
+        .then(() => {
+            streamerWebsocket.send("O\n" + id + "\n" + JSON.stringify(peerConnection.localDescription));
+        });
+
+        peerConnection.onconnectionstatechange = () => {
+            console.log("Disconnecting peer");
+            if (peerConnection.iceConnectionState == 'disconnected') {
+                streamerPeerConnections[id].close();
+                delete streamerPeerConnections[id];
+            };
+        };
+    };
+
+    function processAnswer(id, answer) {
+        if (id in streamerPeerConnections) {
+            streamerPeerConnections[id].setRemoteDescription(answer);
+        };
+    };
+
+    function processCandidateStreamer(id, candidate) {
+        streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+    };
+
+
+    //Subscriber
+    subscriberWebsocket.onopen = () => {
+        subscriberWebsocket.send("R\n" + "0");
+    };
+
+    subscriberWebsocket.onclose = () => {
+    };
+
+    subscriberWebsocket.onmessage = e => {
+        let parts = e.data.split("\n", 5);
+        if (parts[0] == "O") {
+            processOffer(parts[1], JSON.parse(parts[2]));
+        } else if (parts[0] == "C") {
+            processCandidateSubscriber(parts[1], JSON.parse(parts[2]));
+        };
+    };
+
+    function processOffer(id, offer) {
+        streamer_id = id;
+        subscriberPeerConnection = new RTCPeerConnection(RTCConfig);
+        subscriberPeerConnection
+        .setRemoteDescription(offer)
+        .then(() => subscriberPeerConnection.createAnswer())
+        .then(sdp => subscriberPeerConnection.setLocalDescription(sdp))
+        .then(() => {
+            subscriberWebsocket.send("A\n" + streamer_id + "\n" + JSON.stringify(subscriberPeerConnection.localDescription));
+        });
+
+        //Stream
+        subscriberPeerConnection.ontrack = e => {
+            subscriberVideo.srcObject = e.streams[0];
+        };
+
+        //Candidate
+        subscriberPeerConnection.onicecandidate = e => {
+            if (e.candidate) {
+                subscriberWebsocket.send("C\n" + streamer_id + "\n" + JSON.stringify(e.candidate));
+            };
+        };
+    }
+
+
+    function processCandidateSubscriber(_, candidate) {
+        subscriberPeerConnection
+        .addIceCandidate(new RTCIceCandidate(candidate))
+        .catch(e => console.error(e));
+    };
+
+
+    //UI
     function startStreamer() {
         document.getElementById("resolution").disabled = true;
+        if (screen.width > 600) {
+            if (document.getElementById("resolution").value == "1920x1080") {
+                constraints.video.width = {exact: 1920}
+                constraints.video.height = {exact: 1080}
+            } else if (document.getElementById("resolution").value == "1280x720") {
+                constraints.video.width = {exact: 1280}
+                constraints.video.height = {exact: 720}
+            };
+        } else {
+            if (document.getElementById("resolution").value == "1920x1080") {
+                constraints.video.width = {exact: 1080}
+                constraints.video.height = {exact: 1920}
+            } else if (document.getElementById("resolution").value == "1280x720") {
+                constraints.video.width = {exact: 720}
+                constraints.video.height = {exact: 1280}
+            } else {
+                constraints.video.width = {exact: 480}
+                constraints.video.height = {exact: 640}
+            };
+        };
+        //Start websocket
+        streamerWebsocket = new WebSocket(uri);
+        //Setup streaming
+        navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(stream => {
+            streamerVideo.srcObject = stream;
+        })
+        .catch(error => console.error(error));
     };
 
     function connectSubscriber() {
-
+        subscriberWebsocket = new WebSocket(uri);
     };
 
 
@@ -44,6 +214,14 @@ const pageTitle = "WebRTC stress testing";
             }]
         },
     });
+
+
+    //Unload
+    window.onunload = window.onbeforeunload = () => {
+        streamerWebsocket.close();
+        subscriberWebsocket.close();
+        analyzerWebsocket.close();
+    };
 </script>
 
 <Layout pageTitle={pageTitle}>
