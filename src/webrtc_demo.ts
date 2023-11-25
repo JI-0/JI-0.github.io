@@ -247,8 +247,8 @@ function startDummyClients() {
                 if (pacPerS > maxP) { maxP = pacPerS };
             };
             if (avg != 0) { avg = avg / maxK };
-            chartAddData(maxP, avg, minP);
             maxK += 1;
+            chartAddData(maxP, avg, minP);
             minT = 16976116344130;
             maxT = 0;
             timestampClis = {};
@@ -304,6 +304,7 @@ function chartAddData(mx: number, avg: number, mi: number) {
     chart.data.datasets[1].data.push(avg);
     chart.data.datasets[2].data.push(mi);
     chart.update();
+    document.getElementById("dummyClientProgressBar").style.width = maxK/parseInt(numberOfDummyClientsSlider.value) + "%";
 };
 
 
