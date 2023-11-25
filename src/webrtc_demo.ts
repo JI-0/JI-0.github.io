@@ -1,8 +1,7 @@
 // import { Chart } from './chart.js';
-
-import type { HTMLAttributes } from "astro/types";
-
-const uri = "wss://the.testingwebrtc.com:3000";
+const uriStreamer = "wss://the.testingwebrtc.com:3000";
+const uriSubscriber = "wss://the.testingwebrtc.com:3001";
+const uriAnalytics = "wss://the.testingwebrtc.com:3002";
 let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
@@ -32,6 +31,7 @@ let constraints = {
 
 document.getElementById("startStreamerBtn").onclick = startStreamer;
 document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
+document.getElementById("startDummyClientsBtn").onclick = startDummyClients;
 const streamerVideo = document.getElementById("streamer") as HTMLVideoElement;
 const subscriberVideo = document.getElementById("subscriber") as HTMLVideoElement;
 const numberOfDummyClientsSlider = document.getElementById("numOfDummyClients") as HTMLInputElement;
@@ -48,9 +48,9 @@ function makeID(length = 16) {
     while (counter < length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
         counter += 1;
-    }
+    };
     return result;
-}
+};
 
 
 
@@ -59,6 +59,7 @@ function startStreamer() {
     (document.getElementById("resolution") as HTMLSelectElement).disabled = true;
     (document.getElementById("startStreamerBtn") as HTMLButtonElement).disabled = true;
     (document.getElementById("connectSubscriberBtn") as HTMLButtonElement).disabled = false;
+    (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = false;
     if (screen.width > 600) {
         if ((document.getElementById("resolution") as HTMLSelectElement).value == "1920x1080") {
             constraints.video.width = {exact: 1920}
@@ -82,7 +83,7 @@ function startStreamer() {
     //Set username
     username = makeID()
     //Start websocket
-    streamerWebsocket = new WebSocket(uri);
+    streamerWebsocket = new WebSocket(uriStreamer);
     //Setup streaming
     navigator.mediaDevices
     .getUserMedia(constraints)
@@ -156,7 +157,7 @@ function startStreamer() {
 
 function connectSubscriber() {
     (document.getElementById("connectSubscriberBtn") as HTMLButtonElement).disabled = true;
-    subscriberWebsocket = new WebSocket(uri);
+    subscriberWebsocket = new WebSocket(uriSubscriber);
 
 
     //Subscriber
@@ -208,9 +209,35 @@ function connectSubscriber() {
 };
 
 
+function startDummyClients() {
+    (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = true;
+    //Start websocket
+    analyzerWebsocket = new WebSocket(uriAnalytics);
+    
+    //Streamer
+    analyzerWebsocket.onopen = () => {
+        analyzerWebsocket.send("R\n" + username + "\n" + user_info);
+    };
+
+    streamerWebsocket.onclose = () => {
+    };
+
+    streamerWebsocket.onmessage = e => {
+        let parts = e.data.split("\n");
+        if (parts[0] == "R") {
+            newSubscriber(parts[1]);
+        } else if (parts[0] == "A") {
+            processAnswer(parts[1], JSON.parse(parts[2]));
+        } else if (parts[0] == "C") {
+            processCandidateStreamer(parts[1], JSON.parse(parts[2]));
+        };
+    };    
+};
+
+
 numberOfDummyClientsSlider.oninput = () => {
     numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
-}
+};
 
 
 //Chart
@@ -239,6 +266,13 @@ let chart = new Chart(packetChart, {
         }]
     },
 });
+
+function chartAddData(mx: number, avg: number, mi: number) {
+    chart.data.datasets[0].data.push(mx);
+    chart.data.datasets[1].data.push(avg);
+    chart.data.datasets[2].data.push(mi);
+    chart.update();
+};
 
 
 //Unload
