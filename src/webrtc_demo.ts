@@ -1,4 +1,3 @@
-// import { Chart } from './chart.js';
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
 const uriAnalytics = "wss://the.testingwebrtc.com:3002";
@@ -36,7 +35,8 @@ const streamerVideo = document.getElementById("streamer") as HTMLVideoElement;
 const subscriberVideo = document.getElementById("subscriber") as HTMLVideoElement;
 const numberOfDummyClientsSlider = document.getElementById("numOfDummyClients") as HTMLInputElement;
 const numberOfDummyClientsTxt = document.getElementById("numDummyClientsTxt") as HTMLParagraphElement;
-numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
+const currentNumDummyClientsTxt = document.getElementById("currentNumDummyClientsTxt") as HTMLParagraphElement;
+numberOfDummyClientsTxt.innerHTML = "Requested number of dummy clients: " + numberOfDummyClientsSlider.value;
 
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -224,19 +224,19 @@ function startDummyClients() {
 
     streamerWebsocket.onmessage = e => {
         let parts = e.data.split("\n");
-        if (parts[0] == "R") {
-            newSubscriber(parts[1]);
-        } else if (parts[0] == "A") {
-            processAnswer(parts[1], JSON.parse(parts[2]));
-        } else if (parts[0] == "C") {
-            processCandidateStreamer(parts[1], JSON.parse(parts[2]));
-        };
+        // if (parts[0] == "R") {
+        //     newSubscriber(parts[1]);
+        // } else if (parts[0] == "A") {
+        //     processAnswer(parts[1], JSON.parse(parts[2]));
+        // } else if (parts[0] == "C") {
+        //     processCandidateStreamer(parts[1], JSON.parse(parts[2]));
+        // };
     };    
 };
 
 
 numberOfDummyClientsSlider.oninput = () => {
-    numberOfDummyClientsTxt.innerHTML = "Number of dummy clients: " + numberOfDummyClientsSlider.value;
+    numberOfDummyClientsTxt.innerHTML = "Requested number of dummy clients: " + numberOfDummyClientsSlider.value;
 };
 
 

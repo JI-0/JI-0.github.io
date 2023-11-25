@@ -74,9 +74,14 @@ const pageTitle = "WebRTC stress testing";
     <div class="sliderContainer">
         <input type="range" min="1" max="100" value="50" class="slider" id="numOfDummyClients">
     </div>
-    <p id="numDummyClientsTxt">Number of dummy clients: </p>
+    <p id="numDummyClientsTxt">Requested number of dummy clients: </p>
+    <br>
     <button id="startDummyClientsBtn" disabled>Start dummy cli test</button>
-    vfv
+    <p id="currentNumDummyClientsTxt">Current number of clients: 0</p>
+    <p></p>
+    <div id="dummyClientProgress">
+        <div id="dummyClientProgressBar"></div>
+    </div>
     <p></p>
     <canvas id="packetChart"></canvas>
 </Layout>
@@ -142,6 +147,18 @@ const pageTitle = "WebRTC stress testing";
         border-radius: 50%;
         background: #04AA6D;
         cursor: pointer;
+    }
+
+    /* Dummy client progress */
+    #dummyClientProgress {
+        width: 100%;
+        background-color: grey;
+    }
+
+    #dummyClientProgressBar {
+        width: 0%;
+        height: 30px;
+        background-color: #04AA6D;
     }
 
     /* Graph */
