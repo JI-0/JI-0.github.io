@@ -1,4 +1,4 @@
-import { Chart } from './chart.js';
+// import { Chart } from './chart.js';
 
 const uri = "wss://the.testingwebrtc.com:3000";
 let username = "";
@@ -48,115 +48,6 @@ function makeID(length = 16) {
 }
 
 
-//Streamer
-streamerWebsocket.onopen = () => {
-    streamerWebsocket.send("U\n" + username + "\n" + user_info);
-};
-
-streamerWebsocket.onclose = () => {
-};
-
-streamerWebsocket.onmessage = e => {
-    let parts = e.data.split("\n", 5);
-    if (parts[0] == "R") {
-        newSubscriber(parts[1]);
-    } else if (parts[0] == "A") {
-        processAnswer(parts[1], JSON.parse(parts[2]));
-    } else if (parts[0] == "C") {
-        processCandidateStreamer(parts[1], JSON.parse(parts[2]));
-    };
-};
-
-function newSubscriber(id) {
-    const peerConnection = new RTCPeerConnection(RTCConfig);
-    streamerPeerConnections[id] = peerConnection;
-
-    //Set streaming
-    let stream = streamerVideo.srcObject as MediaStream;
-    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
-
-    //Candidate
-    peerConnection.onicecandidate = e => {
-        if (e.candidate) {
-            streamerWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
-        };
-    };
-
-    //Create and send offer
-    peerConnection
-    .createOffer()
-    .then(sdp => peerConnection.setLocalDescription(sdp))
-    .then(() => {
-        streamerWebsocket.send("O\n" + id + "\n" + JSON.stringify(peerConnection.localDescription));
-    });
-
-    peerConnection.onconnectionstatechange = () => {
-        console.log("Disconnecting peer");
-        if (peerConnection.iceConnectionState == 'disconnected') {
-            streamerPeerConnections[id].close();
-            delete streamerPeerConnections[id];
-        };
-    };
-};
-
-function processAnswer(id, answer) {
-    if (id in streamerPeerConnections) {
-        streamerPeerConnections[id].setRemoteDescription(answer);
-    };
-};
-
-function processCandidateStreamer(id, candidate) {
-    streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-};
-
-
-//Subscriber
-subscriberWebsocket.onopen = () => {
-    subscriberWebsocket.send("R\n" + username);
-};
-
-subscriberWebsocket.onclose = () => {
-};
-
-subscriberWebsocket.onmessage = e => {
-    let parts = e.data.split("\n", 5);
-    if (parts[0] == "O") {
-        processOffer(parts[1], JSON.parse(parts[2]));
-    } else if (parts[0] == "C") {
-        processCandidateSubscriber(parts[1], JSON.parse(parts[2]));
-    };
-};
-
-function processOffer(id, offer) {
-    subscriberPeerConnection = new RTCPeerConnection(RTCConfig);
-    subscriberPeerConnection
-    .setRemoteDescription(offer)
-    .then(() => subscriberPeerConnection.createAnswer())
-    .then(sdp => subscriberPeerConnection.setLocalDescription(sdp))
-    .then(() => {
-        subscriberWebsocket.send("A\n" + id + "\n" + JSON.stringify(subscriberPeerConnection.localDescription));
-    });
-
-    //Stream
-    subscriberPeerConnection.ontrack = e => {
-        subscriberVideo.srcObject = e.streams[0];
-    };
-
-    //Candidate
-    subscriberPeerConnection.onicecandidate = e => {
-        if (e.candidate) {
-            subscriberWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
-        };
-    };
-}
-
-
-function processCandidateSubscriber(_, candidate) {
-    subscriberPeerConnection
-    .addIceCandidate(new RTCIceCandidate(candidate))
-    .catch(e => console.error(e));
-};
-
 
 //UI
 function startStreamer() {
@@ -194,11 +85,121 @@ function startStreamer() {
         streamerVideo.srcObject = stream;
     })
     .catch(error => console.error(error));
+
+
+    //Streamer
+    streamerWebsocket.onopen = () => {
+        streamerWebsocket.send("U\n" + username + "\n" + user_info);
+    };
+
+    streamerWebsocket.onclose = () => {
+    };
+
+    streamerWebsocket.onmessage = e => {
+        let parts = e.data.split("\n", 5);
+        if (parts[0] == "R") {
+            newSubscriber(parts[1]);
+        } else if (parts[0] == "A") {
+            processAnswer(parts[1], JSON.parse(parts[2]));
+        } else if (parts[0] == "C") {
+            processCandidateStreamer(parts[1], JSON.parse(parts[2]));
+        };
+    };
+
+    function newSubscriber(id) {
+        const peerConnection = new RTCPeerConnection(RTCConfig);
+        streamerPeerConnections[id] = peerConnection;
+
+        //Set streaming
+        let stream = streamerVideo.srcObject as MediaStream;
+        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+
+        //Candidate
+        peerConnection.onicecandidate = e => {
+            if (e.candidate) {
+                streamerWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
+            };
+        };
+
+        //Create and send offer
+        peerConnection
+        .createOffer()
+        .then(sdp => peerConnection.setLocalDescription(sdp))
+        .then(() => {
+            streamerWebsocket.send("O\n" + id + "\n" + JSON.stringify(peerConnection.localDescription));
+        });
+
+        peerConnection.onconnectionstatechange = () => {
+            console.log("Disconnecting peer");
+            if (peerConnection.iceConnectionState == 'disconnected') {
+                streamerPeerConnections[id].close();
+                delete streamerPeerConnections[id];
+            };
+        };
+    };
+
+    function processAnswer(id, answer) {
+        if (id in streamerPeerConnections) {
+            streamerPeerConnections[id].setRemoteDescription(answer);
+        };
+    };
+
+    function processCandidateStreamer(id, candidate) {
+        streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+    };
 };
 
 function connectSubscriber() {
     (document.getElementById("connectSubscriberBtn") as HTMLButtonElement).disabled = true;
     subscriberWebsocket = new WebSocket(uri);
+
+
+    //Subscriber
+    subscriberWebsocket.onopen = () => {
+        subscriberWebsocket.send("R\n" + username);
+    };
+
+    subscriberWebsocket.onclose = () => {
+    };
+
+    subscriberWebsocket.onmessage = e => {
+        let parts = e.data.split("\n", 5);
+        if (parts[0] == "O") {
+            processOffer(parts[1], JSON.parse(parts[2]));
+        } else if (parts[0] == "C") {
+            processCandidateSubscriber(parts[1], JSON.parse(parts[2]));
+        };
+    };
+
+    function processOffer(id, offer) {
+        subscriberPeerConnection = new RTCPeerConnection(RTCConfig);
+        subscriberPeerConnection
+        .setRemoteDescription(offer)
+        .then(() => subscriberPeerConnection.createAnswer())
+        .then(sdp => subscriberPeerConnection.setLocalDescription(sdp))
+        .then(() => {
+            subscriberWebsocket.send("A\n" + id + "\n" + JSON.stringify(subscriberPeerConnection.localDescription));
+        });
+
+        //Stream
+        subscriberPeerConnection.ontrack = e => {
+            subscriberVideo.srcObject = e.streams[0];
+        };
+
+        //Candidate
+        subscriberPeerConnection.onicecandidate = e => {
+            if (e.candidate) {
+                subscriberWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
+            };
+        };
+    }
+
+
+    function processCandidateSubscriber(_, candidate) {
+        subscriberPeerConnection
+        .addIceCandidate(new RTCIceCandidate(candidate))
+        .catch(e => console.error(e));
+    };
 };
 
 
