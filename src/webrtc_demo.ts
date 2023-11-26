@@ -13,7 +13,7 @@ let subscriberPeerConnection : RTCPeerConnection;
 const RTCConfig = {
     iceServers: [
         {
-            "urls": "turn:the.testingwebrtc.com:5349",
+            "urls": "turn:the.testingwebrtc.com",
             'username': 'test',
             'credential': 'key1234567890',
             // "urls": "stun:stun.l.google.com:19302",
@@ -158,7 +158,6 @@ function startStreamer() {
     };
 
     function processCandidateStreamer(id, candidate) {
-        // if (candidate.sdpMid == null && candidate.sdpMLineIndex == null) { return };
         streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     };
 };
