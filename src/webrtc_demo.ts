@@ -129,7 +129,7 @@ function startStreamer() {
 
         //Candidate
         peerConnection.onicecandidate = e => {
-            if (e.candidate && (e.candidate.sdpMLineIndex != null && e.can)) {
+            if (e.candidate) {// && (e.candidate.sdpMLineIndex != null && e.can)) {
                 streamerWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
             };
         };
@@ -158,7 +158,7 @@ function startStreamer() {
     };
 
     function processCandidateStreamer(id, candidate) {
-        if (candidate.sdpMid == null && candidate.sdpMLineIndex == null) { return };
+        // if (candidate.sdpMid == null && candidate.sdpMLineIndex == null) { return };
         streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     };
 };
