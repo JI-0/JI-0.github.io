@@ -13,10 +13,10 @@ let subscriberPeerConnection : RTCPeerConnection;
 const RTCConfig = {
     iceServers: [
         {
-            // "urls": "turn:test.testingwebrtc.com:443",
-            // 'username': 'test',
-            // 'credential': 'key1234567890',
-            "urls": "stun:stun.l.google.com:19302",
+            "urls": "turn:the.testingwebrtc.com:5349",
+            'username': 'test',
+            'credential': 'key1234567890',
+            // "urls": "stun:stun.l.google.com:19302",
         }
     ]
 };
@@ -30,7 +30,7 @@ let constraints = {
 
 // Analyzer
 let maxK = 0;
-let minT = 16976116344130;
+let minT = 100;
 let maxT = 0;
 let timestampClis = {};
 
@@ -129,7 +129,7 @@ function startStreamer() {
 
         //Candidate
         peerConnection.onicecandidate = e => {
-            if (e.candidate) {
+            if (e.candidate && (e.candidate.sdpMLineIndex != null && e.can)) {
                 streamerWebsocket.send("C\n" + id + "\n" + JSON.stringify(e.candidate));
             };
         };
@@ -158,6 +158,7 @@ function startStreamer() {
     };
 
     function processCandidateStreamer(id, candidate) {
+        if (candidate.sdpMid == null && candidate.sdpMLineIndex == null) { return };
         streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     };
 };
@@ -235,8 +236,8 @@ function startDummyClients() {
         if (parts.length != 2) {
             console.error("Analyzer error");
         };
-        if (parts[0] == "N") {
-            let minP = 16976116344130;
+        if (parts[0] == "N" && parts[1] != "0") {
+            let minP = 100;
             let maxP = 0;
             let avg = 0;
             for (let i = 0; i < maxK && i < parseInt(numberOfDummyClientsSlider.value); i++) {
@@ -249,10 +250,10 @@ function startDummyClients() {
             if (avg != 0) { avg = avg / maxK };
             maxK += 1;
             chartAddData(maxP, avg, minP);
-            minT = 16976116344130;
+            minT = 100;
             maxT = 0;
             timestampClis = {};
-        } else {
+        } else if (parts[0] != "N") {
             let cliI = parseInt(parts[0]);
             let newT = parseInt(parts[1]);
             if (newT < minT) { minT = newT };
