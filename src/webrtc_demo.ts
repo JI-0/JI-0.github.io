@@ -1,6 +1,6 @@
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
-const uriAnalytics = "wss://the.testingwebrtc.com:3002";
+const uriAnalytics = "ws://localhost:3002";
 let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
@@ -217,14 +217,18 @@ function connectSubscriber() {
 
 
 function startDummyClients() {
-    (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = true;
     numberOfDummyClientsSlider.disabled = true;
     //Start websocket
     analyzerWebsocket = new WebSocket(uriAnalytics);
     
     //Streamer
     analyzerWebsocket.onopen = () => {
+        (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = true;
         analyzerWebsocket.send("R\n" + username + "\n" + numberOfDummyClientsSlider.value);
+    };
+
+    analyzerWebsocket.onerror = () => {
+        window.alert("Analyzer connection error.");
     };
 
     analyzerWebsocket.onclose = () => {
