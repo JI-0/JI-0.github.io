@@ -1,7 +1,7 @@
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
 const uriAnalytics = "ws://localhost:3002";
-let username = "";
+// let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
 let subscriberWebsocket : WebSocket;
@@ -38,6 +38,7 @@ let timestampClis = {};
 document.getElementById("startStreamerBtn").onclick = startStreamer;
 document.getElementById("connectSubscriberBtn").onclick = connectSubscriber;
 document.getElementById("startDummyClientsBtn").onclick = startDummyClients;
+const streamID = document.getElementById("streamID") as HTMLInputElement;
 const streamerVideo = document.getElementById("streamer") as HTMLVideoElement;
 const subscriberVideo = document.getElementById("subscriber") as HTMLVideoElement;
 const numberOfDummyClientsSlider = document.getElementById("numOfDummyClients") as HTMLInputElement;
@@ -59,6 +60,8 @@ function makeID(length = 16) {
     return result;
 };
 
+
+streamID.value = makeID();
 
 
 //UI
@@ -87,8 +90,8 @@ function startStreamer() {
             constraints.video.height = {exact: 640}
         };
     };
-    //Set username
-    username = makeID()
+    // //Set username
+    // username = makeID()
     //Start websocket
     streamerWebsocket = new WebSocket(uriStreamer);
     //Setup streaming
@@ -102,7 +105,7 @@ function startStreamer() {
 
     //Streamer
     streamerWebsocket.onopen = () => {
-        streamerWebsocket.send("U\n" + username + "\n" + user_info);
+        streamerWebsocket.send("U\n" + streamID.value + "\n" + user_info);
     };
 
     streamerWebsocket.onclose = () => {
@@ -169,7 +172,7 @@ function connectSubscriber() {
 
     //Subscriber
     subscriberWebsocket.onopen = () => {
-        subscriberWebsocket.send("R\n" + username);
+        subscriberWebsocket.send("R\n" + streamID.value);
     };
 
     subscriberWebsocket.onclose = () => {
@@ -224,7 +227,7 @@ function startDummyClients() {
     //Streamer
     analyzerWebsocket.onopen = () => {
         (document.getElementById("startDummyClientsBtn") as HTMLButtonElement).disabled = true;
-        analyzerWebsocket.send("R\n" + username + "\n" + numberOfDummyClientsSlider.value);
+        analyzerWebsocket.send("R\n" + streamID.value + "\n" + numberOfDummyClientsSlider.value);
     };
 
     analyzerWebsocket.onerror = () => {
