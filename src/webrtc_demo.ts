@@ -1,6 +1,6 @@
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
-const uriAnalytics = "ws://localhost:3005";
+const uriAnalytics = "ws://167.179.66.131:3005"//localhost:3005";
 // let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
@@ -115,6 +115,8 @@ function startStreamer() {
         let parts = e.data.split("\n", 5);
         if (parts[0] == "R") {
             newSubscriber(parts[1]);
+        } else if (parts[0] == "O") {
+            processOffer(parts[1], JSON.parse(parts[2]))
         } else if (parts[0] == "A") {
             processAnswer(parts[1], JSON.parse(parts[2]));
         } else if (parts[0] == "C") {
@@ -154,6 +156,12 @@ function startStreamer() {
         };
     };
 
+    function processOffer(id, offer) {
+        if (id in streamerPeerConnections) {
+            streamerPeerConnections[id].setRemoteDescription(offer);
+        };
+    };
+
     function processAnswer(id, answer) {
         if (id in streamerPeerConnections) {
             streamerPeerConnections[id].setRemoteDescription(answer);
@@ -161,7 +169,12 @@ function startStreamer() {
     };
 
     function processCandidateStreamer(id, candidate) {
-        streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+        if (candidate.type == 'offer') {
+            console.log("Got offer");
+            processOffer(id, candidate);
+        } else {
+            streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+        };
     };
 };
 
@@ -255,6 +268,11 @@ function startDummyClients() {
             let avg = 0;
             for (let i = 0; i < maxK && i < parseInt(numberOfDummyClientsSlider.value); i++) {
                 let sumOfC = timestampClis[i];
+                console.log("New log");
+                console.log(sumOfC);
+                console.log(maxT);
+                console.log(minT);
+                console.log(maxT - minT);
                 let pacPerS = 1000 * sumOfC / (maxT - minT);
                 avg += pacPerS;
                 if (pacPerS < minP) { minP = pacPerS };
@@ -315,6 +333,14 @@ let chart = new Chart(packetChart, {
             fill: false
         }]
     },
+    options: {
+        scales: {
+            y: {
+                min: 0,
+                max: 50
+            }
+        }
+    }
 });
 
 function chartAddData(mx: number, avg: number, mi: number) {
