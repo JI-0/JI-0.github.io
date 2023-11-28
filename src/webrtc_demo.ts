@@ -1,6 +1,6 @@
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
-const uriAnalytics = "ws://localhost:3002";
+const uriAnalytics = "ws://localhost:3005";
 // let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
@@ -230,8 +230,8 @@ function startDummyClients() {
         analyzerWebsocket.send("R\n" + streamID.value + "\n" + numberOfDummyClientsSlider.value);
     };
 
-    analyzerWebsocket.onerror = () => {
-        window.alert("Analyzer connection error.");
+    analyzerWebsocket.onerror = (e) => {
+        window.alert("Analyzer connection error. ");
     };
 
     analyzerWebsocket.onclose = () => {
@@ -242,7 +242,14 @@ function startDummyClients() {
         if (parts.length != 2) {
             console.error("Analyzer error");
         };
-        if (parts[0] == "N" && parts[1] != "0") {
+        if (parts[0] == "N" && parts[1] == "0") {
+            maxK += 1;
+            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(maxK);
+            document.getElementById("dummyClientProgressBar").style.width = maxK/120*100 + "%";
+            minT = 100;
+            maxT = 0;
+            timestampClis = {};
+        } else if (parts[0] == "N" && parts[1] != "0") {
             let minP = 100;
             let maxP = 0;
             let avg = 0;
@@ -255,7 +262,11 @@ function startDummyClients() {
             };
             if (avg != 0) { avg = avg / maxK };
             maxK += 1;
-            chartAddData(maxP, avg, minP);
+            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(maxK);
+            document.getElementById("dummyClientProgressBar").style.width = maxK/120*100 + "%";
+            if (minP <= avg && avg <= maxP) {
+                chartAddData(maxP, avg, minP);
+            }
             minT = 100;
             maxT = 0;
             timestampClis = {};
@@ -294,12 +305,12 @@ let chart = new Chart(packetChart, {
             fill: false
         },{
             label: "Average",
-            data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
+            data: [],
             borderColor: "blue",
             fill: false
         },{
             label: "Minimum",
-            data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
+            data: [],
             borderColor: "red",
             fill: false
         }]
@@ -311,7 +322,6 @@ function chartAddData(mx: number, avg: number, mi: number) {
     chart.data.datasets[1].data.push(avg);
     chart.data.datasets[2].data.push(mi);
     chart.update();
-    document.getElementById("dummyClientProgressBar").style.width = maxK/parseInt(numberOfDummyClientsSlider.value) + "%";
 };
 
 
