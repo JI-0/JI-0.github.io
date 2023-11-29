@@ -39,7 +39,85 @@ const pageTitle = "E2EE messenger for iOS";
     </p>
     <div class="code-box">
     <Code code={`
-func 
+extension String {
+    func isValidEmail() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", options: .caseInsensitive)
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+    func isValidUsername() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "[a-zA-Z0-9]")
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+    func isValidPassword() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "(?=.{8,})")
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+}
+    `} lang="swift" />
+    </div>
+    <div class="code-box">
+    <Code code={`
+private func addContact() {
+    let newActiveKey = SymmetricKey(size: .bits256).withUnsafeBytes{
+        return Data(Array($0)).base64EncodedString()
+    }
+    //Check if exists
+    let fetchRequest: NSFetchRequest<Contact>
+    fetchRequest = Contact.fetchRequest()
+    fetchRequest.predicate = NSPredicate(format: "nickname == '\(newContact)'")
+    var existantUsers: [Contact]
+    do {
+        existantUsers = try self.viewContext.fetch(fetchRequest)
+    } catch { return }
+    if existantUsers.count == 0 {
+        //Create new
+        let newContactO = Contact(context: viewContext)
+        newContactO.user = newContact
+        newContactO.nickname = newContact
+        newContactO.timestamp = Date()
+        newContactO.group = false
+        newContactO.sharedKey = sharedKey
+        newContactO.activeKey = newActiveKey
+        newContactO.oldActiveKey = ""
+        newContactO.icon = ""
+        newContactO.iconData = Data()
+        newContactO.descriptionText = ""
+        newContactO.newMessage = false
+        newContactO.messageTimestamp = Date()
+        newContactO.lastSeenTimestamp = Date()
+        newContactO.latestMessage = ""
+        newContactO.secure = true
+    } else {
+        //Refresh
+        let refreshingContact = existantUsers.first
+        refreshingContact?.user = newContact
+        refreshingContact?.nickname = newContact
+        refreshingContact?.timestamp = Date()
+        refreshingContact?.group = false
+        refreshingContact?.sharedKey = sharedKey
+        refreshingContact?.activeKey = newActiveKey
+        refreshingContact?.secure = true
+    }
+    do {
+        try viewContext.save()
+    } catch {
+        let nsError = error as NSError
+        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+    }
+    model.sendMessage(contact: newContact, group: false, receiver: newContact, hash: SymmetricKey(size: .bits256).withUnsafeBytes{ return Data(Array($0)).base64EncodedString() }, key: sharedKey, text: "NEW_CONTACT:\(newActiveKey):\(model.profilePicture)")
+    newContact = ""
+    sharedKey = ""
+}
+    `} lang="swift" />
+    </div>
+    <div class="code-box">
+    <Code code={`
+ForEach(messages) { message in
+    let minutesAgo = Int(-message.timestamp!.timeIntervalSinceNow)/60
+    let failedToSend = (Int(message.status) == 0 && minutesAgo > 5) || (message.notReceivedBy != "" && minutesAgo > 10080)
+    let bySelf = model.username == message.by
+    let illegible = message.text!.starts(with: "<ILLEGIBLE>") || message.reaction!.contains("<UnencryptedRequest>")
+    MessageBubbleView(bySelf: bySelf, by: message.by!, encrypted: message.encrypted, group: group, failedToSend: failedToSend, timestamp: message.timestamp!, status: Int(message.status), text: message.text!, metadata: message.metadata ?? Data(), reaction: message.reaction!)
     `} lang="swift" />
     </div>
     <h2 id="demo">Demo</h2>
