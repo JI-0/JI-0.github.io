@@ -9,24 +9,29 @@ const pageTitle = "E2EE messenger for iOS";
     </div>
     <h1>E2EE messenger for iOS</h1>
     <small>Swift</small>
+    <small>Go/Golang</small>
     <small>Networking</small>
     <small>Encryption</small>
     <p></p>
     <a href="#demo"><button type="button"><img width="20" height="20" src="/live.svg"/> Demo</button></a>
     <h2>Problem/Challenge</h2>
     <p>
-        As part of my working on the mobile game Portal Ninja with Cloud Base Games Ltd. I was tasked to create a level builder,
-        which would allow for simple and fast creation of levels that both level designers, as well as players could use. It 
-        had to provide variety in terms of rooms, elements and assets being used, but also intuitive and simple level iteration.
+        Though there are many messaging apps available online, many do not offer a satisfactory level of security and privacy, 
+        or require the user to trust the application provider. Though there are some platforms such as Signal and WhatsApp, 
+        which offer true E2E encryption, they do so using asymmetric encryption, meaning that they in theory could be broken, 
+        and they require a phone number to be linked to an account, deanonymizing the user at best. As such I decided to 
+        create an alternative that is both user and privacy/security centric, where the user does not need to trust any actor 
+        in the information flow, including the ISP provider and platform server manager/provider.
     </p>
     <h2>Solution</h2>
     <p>
-        I decided that the optimal solution for this would be to create a level builder, where levels could be made with a drawing
-        style application, where each bloc/pixel would represent a 4x4 area in terms of the game level. The levels are built in 
-        a few steps. First the level shape is determined with drawing in the black area, or by generating one at random or with a 
-        seed. Then, the corridors are created (blue blocks), made wither by hand or generated. Next based on the corridors drawn 
-        in the blueprint, rooms are generated with passages to ensure they are all accessible either through the corridors or 
-        other rooms. Finally, the assets are chosen for the level with other options before the whole level is generated.
+        In order to truly not need to trust anyone in the data flow from one device to another, the best method is to use 
+        a symmetric key encryption such as AES (the system uses AES-GCM), which has to be shared between two devices in a 
+        secure way, preferably in person. This way, in theory, the only ones capable of decrypting a message would be the two 
+        devices with the key, that can be periodically changed. I have thus far created a messaging app for iOS using SwiftUI 
+        and Go for the backend server. I created a NotificationServiceExtension to decrypt messages in the background 
+        when they are sent as Push Notifications (when the device is not connected to the Go server). Now I am focusing 
+        on implementing an audio and video call option using WebRTC and CallKit.
     </p>
     <p>
         The project is not publicly available as it is a work in progress, but some code snippets from the project 
