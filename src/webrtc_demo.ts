@@ -1,6 +1,6 @@
 const uriStreamer = "wss://the.testingwebrtc.com:3000";
 const uriSubscriber = "wss://the.testingwebrtc.com:3001";
-const uriAnalytics = "ws://167.179.66.131:3005"//localhost:3005";
+const uriAnalytics = "ws://localhost:3002";
 // let username = "";
 let user_info = "";
 let streamerWebsocket : WebSocket;
@@ -30,7 +30,7 @@ let constraints = {
 
 // Analyzer
 let maxK = 0;
-let minT = 100;
+let minT = 170118100000000;
 let maxT = 0;
 let timestampClis = {};
 
@@ -115,8 +115,6 @@ function startStreamer() {
         let parts = e.data.split("\n", 5);
         if (parts[0] == "R") {
             newSubscriber(parts[1]);
-        } else if (parts[0] == "O") {
-            processOffer(parts[1], JSON.parse(parts[2]))
         } else if (parts[0] == "A") {
             processAnswer(parts[1], JSON.parse(parts[2]));
         } else if (parts[0] == "C") {
@@ -156,12 +154,6 @@ function startStreamer() {
         };
     };
 
-    function processOffer(id, offer) {
-        if (id in streamerPeerConnections) {
-            streamerPeerConnections[id].setRemoteDescription(offer);
-        };
-    };
-
     function processAnswer(id, answer) {
         if (id in streamerPeerConnections) {
             streamerPeerConnections[id].setRemoteDescription(answer);
@@ -169,12 +161,7 @@ function startStreamer() {
     };
 
     function processCandidateStreamer(id, candidate) {
-        if (candidate.type == 'offer') {
-            console.log("Got offer");
-            processOffer(id, candidate);
-        } else {
-            streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-        };
+        streamerPeerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
     };
 };
 
@@ -257,9 +244,9 @@ function startDummyClients() {
         };
         if (parts[0] == "N" && parts[1] == "0") {
             maxK += 1;
-            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(maxK);
+            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(Math.min(maxK, parseInt(numberOfDummyClientsSlider.value)));
             document.getElementById("dummyClientProgressBar").style.width = maxK/120*100 + "%";
-            minT = 100;
+            minT = 170118100000000;
             maxT = 0;
             timestampClis = {};
         } else if (parts[0] == "N" && parts[1] != "0") {
@@ -280,17 +267,20 @@ function startDummyClients() {
             };
             if (avg != 0) { avg = avg / maxK };
             maxK += 1;
-            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(maxK);
+
+            currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(Math.min(maxK, parseInt(numberOfDummyClientsSlider.value)));
             document.getElementById("dummyClientProgressBar").style.width = maxK/120*100 + "%";
             if (minP <= avg && avg <= maxP) {
                 chartAddData(maxP, avg, minP);
             }
-            minT = 100;
+            minT = 170118100000000;
             maxT = 0;
             timestampClis = {};
         } else if (parts[0] != "N") {
             let cliI = parseInt(parts[0]);
             let newT = parseInt(parts[1]);
+            console.log(cliI);
+            console.log(newT);
             if (newT < minT) { minT = newT };
             if (newT > maxT) { maxT = newT };
             if (cliI in timestampClis) {
@@ -337,7 +327,7 @@ let chart = new Chart(packetChart, {
         scales: {
             y: {
                 min: 0,
-                max: 50
+                max: 70
             }
         }
     }
