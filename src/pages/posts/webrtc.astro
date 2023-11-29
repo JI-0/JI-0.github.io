@@ -46,11 +46,16 @@ const pageTitle = "WebRTC stress testing";
     <h2 id="demo">Demo</h2>
     <p>
         The demo works by first selecting the stream resolution and starting a "streamer". Then it is possible to create a 
-        "subscriber" client that can observe the stream. To run the test the number of peers should be selected and the 
-        test run.
+        "subscriber" client that can observe the stream (from the same device or a separate one). To run the test the number 
+        of peers should be selected and the test run.
     </p>
     <p style="color:red;">
         Note: more unusual network configurations or firewalls might prevent the test from running.
+    </p>
+    <p style="color:red;">
+        Note: the dummy client cluster test requires the demoDummyCli to run on the local machine. This can be run either 
+        by downloading and running the application (currently only built for Mac with Apple silicone) or by running the 
+        application with run instructions.
     </p>
     <h2>Test</h2>
     <label for="streamID">Stream ID:</label>
