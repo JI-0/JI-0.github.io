@@ -12,7 +12,7 @@ const { href, image, title, body, badges } = Astro.props;
 let hasBadges = badges[0] !== "" || badges === null
 ---
 <li class="link-card">
-    <a href={href}>
+    <a data-test={href} href={href}>
         <div class="img">
             <img width="226" height="127" src={image} class="card-img" alt="ProjectImage">
             <ul class="img-badges">
