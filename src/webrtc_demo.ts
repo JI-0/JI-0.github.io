@@ -265,7 +265,7 @@ function startDummyClients() {
                 if (pacPerS < minP) { minP = pacPerS };
                 if (pacPerS > maxP) { maxP = pacPerS };
             };
-            if (avg != 0) { avg = avg / maxK };
+            if (avg != 0) { avg = avg / Math.min(maxK, parseInt(numberOfDummyClientsSlider.value)) };
             maxK += 1;
 
             currentNumDummyClientsTxt.innerHTML = "Current number of clients: " + String(Math.min(maxK, parseInt(numberOfDummyClientsSlider.value)));
