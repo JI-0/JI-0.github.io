@@ -327,7 +327,7 @@ let chart = new Chart(packetChart, {
         scales: {
             y: {
                 min: 0,
-                max: 70
+                max: 60
             }
         }
     }
