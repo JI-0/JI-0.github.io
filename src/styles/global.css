@@ -62,6 +62,7 @@ p {
 }
 
 .title-link, .nav-links {
+    display: inline-flex;
     font-family: 'Pacifico', cursive;
     font-size: 1.3rem;
 }
@@ -88,6 +89,9 @@ p {
 }
 
 .git-icon {
+    display: flex;
+    height: 30px;
+    width: 30px;
     content: url("/github-mark-white.svg");
 }
 
