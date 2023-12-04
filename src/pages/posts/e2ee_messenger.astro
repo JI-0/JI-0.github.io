@@ -124,6 +124,16 @@ ForEach(messages) { message in
     <p>
         A demo video of the project is available below. Please feel free to take a look!
     </p>
+    <div class="gif">
+        <video class="video" controls>
+            <source src="/E2EE_messenger_login.mov">
+        </video>
+    </div>
+    <div class="gif">
+        <video class="video" controls>
+            <source src="/E2EE_messenger_message.MP4">
+        </video>
+    </div>
 </Layout>
 <style>
     html {
@@ -140,6 +150,21 @@ ForEach(messages) { message in
         .main-img {
             width: 300px;
             height: 155px;
+        }
+    }
+
+    /* Video */
+    .video {
+        background-color: white;
+        border-radius: 8px;
+        width: 500px;
+        height: 1084px;
+    }
+
+    @media (max-width: 600px) {
+        .video {
+            width: 300px;
+            height: 650px;
         }
     }
 
