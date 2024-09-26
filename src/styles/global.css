@@ -1,0 +1,285 @@
+/* Global styles */
+html {
+  background-color: #1e1e2e;
+  color: #fdebf3;
+}
+
+body {
+  max-width: 840px;
+  margin: 0 auto;
+  text-align: justify;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+  font-family: "Pacifico", cursive;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 2.6em;
+  margin: 0;
+}
+
+h2 {
+  text-decoration: underline #375a7f;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
+  font-size: 2.1em;
+  margin-bottom: 0;
+}
+
+/* Paragraphs */
+p {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 1.1em;
+  hyphens: auto;
+  line-height: 1.5;
+  text-indent: 1em;
+}
+
+/* Gifs */
+.gif {
+  padding-top: 20px;
+  margin: 20px 0 0 0;
+  text-align: center;
+}
+
+/* Code */
+.code-box {
+  background-color: black;
+  padding: 1px 4px 1px 4px;
+  border-radius: 6px;
+}
+
+/* Navigation Bar */
+.nav-bg {
+  width: 838px;
+  height: 50px;
+  position: fixed;
+  overflow: hidden;
+  margin-top: 0.8rem;
+  padding-top: 10px;
+  background: transparent;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-radius: 50px;
+  z-index: 10;
+}
+
+.nav-bar {
+  width: 1110px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* justify-items: center; */
+  /* align-items: center; */
+}
+
+.title-link,
+.nav-links {
+  display: inline-flex;
+  font-family: "Pacifico", cursive;
+  font-size: 1.3rem;
+}
+
+.title-link a {
+  text-decoration: none;
+}
+
+.title-link a,
+.nav-links a {
+  color: #fdebf3;
+  /* text-decoration: none; */
+}
+
+.title-link a:hover,
+.nav-links a:hover,
+a:focus {
+  text-decoration: underline #375a7f;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.nav-links {
+  /* font-family: "Josefin Sans", sans-serif; */
+  align: right;
+  font-size: 1.4rem;
+  text-align: right;
+  gap: 6px;
+}
+
+/* .nav-links a { */
+/*   margin: 0 13px; */
+/* } */
+
+.git-icon {
+  display: flex;
+  height: 30px;
+  width: 30px;
+  content: url("/github-mark-white.svg");
+}
+
+.mail-icon {
+  content: url("/mail-white.svg");
+}
+
+.astro {
+  content: url("/astro.svg");
+}
+
+.cypress {
+  height: 46px;
+  width: 46px;
+  content: url("/Cypress_White.svg");
+}
+
+.macos {
+  content: url("https://upload.wikimedia.org/wikipedia/commons/2/22/MacOS_logo_%282017%29.svg");
+}
+
+.cr {
+  color: #000000;
+}
+
+.cr a {
+  color: #000000;
+}
+
+/* Footer */
+.foot-btn {
+  display: flex;
+  padding: 20px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 5px solid white;
+}
+
+.foot-btn:hover {
+  background-color: lightskyblue;
+}
+
+.light .foot-btn {
+  border: 5px solid black;
+}
+
+/* Card listing */
+.link-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+  gap: 1rem;
+  padding: 0;
+}
+
+/* Theme Icon */
+html.light {
+  background-color: #fdebf3;
+  color: #1e1e2e;
+}
+
+.light .title-link a {
+  color: #1e1e2e;
+}
+
+.light .card-title {
+  color: #1e1e2e;
+}
+
+.light .card-txt {
+  color: #1e1e2e;
+}
+
+.light .nav-bg {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.light .nav-links a {
+  color: #1e1e2e;
+}
+
+.light .link-card > a {
+  color: #1e1e2e;
+}
+
+.light .git-icon {
+  content: url("/github-mark.svg");
+}
+
+.light .mail-icon {
+  content: url("/mail.svg");
+}
+
+.light .astro {
+  content: url("/astro-dark.svg");
+}
+
+.light .cypress {
+  content: url("https://www.cypress.io/images/layouts/cypress-logo.svg");
+}
+
+.light .macos {
+  content: url("https://upload.wikimedia.org/wikipedia/commons/3/30/MacOS_logo.svg");
+}
+
+.light .cr {
+  color: #ffffff;
+}
+
+.light .cr a {
+  color: #ffffff;
+}
+
+/* Media Query */
+@media only screen and (max-width: 900px) {
+  body {
+    width: 500px;
+  }
+
+  .nav-bg {
+    width: 502px;
+  }
+
+  .nav-bar {
+    width: 488px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    width: 320px;
+  }
+
+  .nav-bg {
+    width: 320px;
+    height: 84px;
+    border-radius: 30px;
+  }
+
+  .nav-bar {
+    display: initial;
+    width: 180px;
+  }
+
+  .title-link {
+    text-align: center;
+  }
+
+  .nav-links {
+    text-align: center;
+    gap: 0px;
+    font-size: 1.24rem;
+  }
+
+  .nav-links a {
+    margin: 0 11px;
+  }
+
+  .gif {
+    padding-top: 40px;
+  }
+}

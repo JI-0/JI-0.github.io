@@ -1,0 +1,94 @@
+---
+import Card from '../components/Card.astro';
+import 'swiper/css/bundle';
+---
+<script>
+    import Swiper from 'swiper/bundle';
+    let swiper;
+    function swiperInit() {
+      let spv = 1;
+      let width = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+      );
+      if (width > 600) {
+        spv = 2;
+      }
+      swiper = new Swiper('.swiper', {
+        slidesPerView: spv,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+          delay: 2000,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        },
+      });
+    }
+    swiperInit();
+    document.addEventListener("astro:after-swap", swiperInit);
+    var resizeTimer;
+    window.onresize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(swiperInit, 250);
+    };
+</script>
+<div data-aos="fade-in" data-aos-delay="300" class="gif">
+    <img width="300" height="259" alt="RaccoonLaptopGif" src="/laptop.webp"/>
+</div>
+<h2 data-aos="fade-in" data-aos-delay="300">Highlights</h2>
+<h2 data-aos="fade-in" data-aos-delay="300">Projects</h2>
+<div data-aos="fade-in" data-aos-delay="300" class="swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+        <Card
+            href="/works/webrtc_dummy_client"
+            image="/webrtc-dummy-client.svg"
+            title="WebRTC Dummy Client"
+            body="A WebRTC dummy client testing suite for testing the limits of WebRTC for streaming"
+            badges={["/live.svg", "/github-mark.svg"]}
+        />
+        </div>
+        <div class="swiper-slide">
+        <Card
+            href="/works/signaling_server"
+            image="/signaling-server.svg"
+            title="WebRTC Signaling Server"
+            body="A WebRTC signaling server written in Go for my research of WebRTC for streaming"
+            badges={["/live.svg", "/github-mark.svg"]}
+        />
+        </div>
+        <div class="swiper-slide">
+        <Card
+            href="/works/nethogs_analyzer"
+            image="/nethogs-analyzer.png"
+            title="Nethogs Analyzer Script"
+            body="A script for streamlining network traffic data collection from Nethogs"
+            badges={["/github-mark.svg"]}
+        />
+        </div>
+        <div class="swiper-slide">
+        <Card
+            href="/works/level_builder"
+            image="/level-builder.png"
+            title="Level Builder"
+            body="A painting style level builder in GDScript"
+            badges={["/code.svg"]}
+        />
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>

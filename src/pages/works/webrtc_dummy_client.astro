@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+const pageTitle = "WebRTC dummy client in Go";
+---
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" width="500" height="259" alt="WebRTCDummyClient" src="/webrtc-dummy-client.svg"/>
+    </div>
+    <h1>WebRTC dummy client</h1>
+    <small>Go/Golang</small>
+    <small>WebRTC</small>
+    <small>Cluster</small>
+    <small>Analysis</small>
+    <p></p>
+    <a href="/posts/webrtc"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
+    <a href="https://github.com/JI-0/WebRTC-Dummy-Client" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
+    <h2>Problem/Challenge</h2>
+    <p>
+        As part of my research at Sophia university (上智大学) I had to create a dummy WebRTC client cluster for testing purposes. 
+        The idea is to have multiple clients join the same stream, where the number is increasing every second or few seconds. At 
+        the same time the stream quality has to be measured.
+    </p>
+    <p>
+        Full paper available <a href="https://github.com/JI-0/WebRTC-Dummy-Client/blob/master/paper/Utilizing%20the%20WebRTC%20P2P%20protocol%20to%20reduce%20infrastructure%20costs%20of%20media%20streaming.pdf"><button type="button">here</button></a>
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Solution</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The solution I opted for was to create an application in Go, which would simulate a determined number of clients joining 
+        the same stream. Each client would be added every second and the stream is recorded (video and audio) as a .webm file, 
+        which can later be analyzed. After the desired number of peers joins the stream, the process continues at the constant 
+        number until a timer times out and the application exits. The peers also record the timestamps of each received packet 
+        from the streeam, which are then used to determine the loss in quality of the stream for each user.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Demo</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The project is publicly available on GitHub <a href="https://github.com/JI-0/WebRTC-Dummy-Client">here</a>.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        A demo is available under the Posts, WebRTC testing. The post is a collection of multiple WebRTC projects created to work 
+        together and act as a demo of testing WebRTC for streaming purposes. You may take a look 
+        <a href="/posts/webrtc">here</a>.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Please feel free to take a look!
+    </p>
+    <a data-aos="fade-in" data-aos-delay="300" href="/posts/webrtc"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
+    <a data-aos="fade-in" data-aos-delay="300" href="https://github.com/JI-0/WebRTC-Dummy-Client" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
+</Layout>
+<style>
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+</style>

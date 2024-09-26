@@ -1,0 +1,41 @@
+---
+const year = new Date().getFullYear();
+const { hidden=false } = Astro.props;
+---
+<footer>
+    <div hidden={hidden}>
+        <div data-aos="fade-in" data-aos-delay="300">
+            <div class="icons">
+                <div><a href="https://github.com/JI-0" target="_blank" class="foot-btn"><span class="git-icon">GitHub</span></a></div>
+                <div><a href="mailto: janivkovic11111@gmail.com" class="foot-btn"><span class="mail-icon">Email</span></a></div>
+            </div>
+        </div>
+        <small class="cr">&copy; {year} <a href="https://github.com/JI-0">JI-0</a>. All Rights Reserved.</small>
+    </div>
+</footer>
+<style>
+    div.icons {
+        display: flex;
+		    justify-content: center;
+	  }
+
+    .icons div {
+        display: inline-block;
+        padding: 0 0.25rem 0 0.25rem;
+    }
+
+    div {
+        margin-top: 1.2rem;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+
+    small {
+        font-family: 'Josefin Sans', sans-serif; 
+    }
+
+    small a {
+        text-decoration: none;
+    }
+
+</style>

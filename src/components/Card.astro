@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+interface Props {
+    href: string;
+    image: string;
+    title: string;
+    body: string;
+    badges?: Array<string>;
+}
+
+const { href, image, title, body, badges } = Astro.props;
+let hasBadges = badges[0] !== "" || badges === null
+---
+<div data-tilt data-tilt-scale=1.12 class="link-card">
+    <a data-test={href} href={href}>
+        <div class="card-img-div">
+            <img class="card-img" width="226" height="127" src={image} class="card-img" alt="ProjectImage">
+        </div>
+        <ul class="img-badges">
+            {hasBadges ? badges.map((badge) => (
+                <li class="border"><img class="badge" src={badge}/></li>
+            )) : <p></p>}
+        </ul>
+	      <h3 class="card-title">
+	          {title}
+	      </h3>
+	      <p class="card-txt">
+	          {body}
+        </p>
+    </a>
+</div>
+<style>
+    .link-card {
+        width: 360px;
+        justify-content: center;
+        list-style: none;
+        display: flex;
+        background-size: 400%;
+        padding: 26px;
+        transform-style: preserve-3d;
+    }
+
+    @media (max-width: 900px) {
+        .link-card {
+            width: 260px;
+        }
+    } 
+
+    .link-card > a {
+        width: 100%;
+        text-decoration: none;
+        border-radius: 8px;
+        color: #fdebf3;
+        text-align: center;
+        transform-style: preserve-3d;
+    }
+
+    .card-img-div {
+        position: relative;
+        display: inline-block;
+    }
+
+    .card-img {
+        transform: translateZ(20px);
+        position: relative;
+        border-radius: 16px;
+        background-color: white;
+    }
+
+    .img-badges {
+        transform: translateZ(30px);
+        height: 4px;
+        position: relative;
+        bottom: 30px;
+        left: 60px;
+    }
+
+    .border {
+        transform: translateZ(5px);
+        display: inline-flex;
+        padding: 2px;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        border: 2px solid black;
+        background-color: lightskyblue;
+    }
+
+    .border img {
+        transform: translateZ(5px);
+    }
+
+    .badge {
+        padding: 2px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .card-title {
+        transform: translateZ(35px);
+        margin: 0;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 1.5rem;
+        font-weight: normal;
+    }
+
+    .card-txt {
+        font-size: 1em;
+        line-height: 1.5;
+        text-indent: 0;
+        padding: 0 20px 18px 20px;
+        margin: 0.5rem 0 0;
+    }
+</style>

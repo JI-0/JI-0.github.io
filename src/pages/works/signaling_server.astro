@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+const pageTitle = "WebRTC signaling server in Go";
+---
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" width="500" height="259" alt="SignalingServer" src="/signaling-server.svg"/>
+    </div>
+    <h1>WebRTC signaling server</h1>
+    <small>Go/Golang</small>
+    <small>Server</small>
+    <small>Relay</small>
+    <small>Trickle ICE</small>
+    <p></p>
+    <a href="/posts/webrtc"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
+    <a href="https://github.com/JI-0/WebRTC_SignalingServer" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
+    <h2>Problem/Challenge</h2>
+    <p>
+        As part of my research at Sophia university (上智大学) I had to create a signaling server in order to relay ICE candidates 
+        between the peers in a way that one peer can request to be promoted to a streamer and the others can join and watch the 
+        stream. 
+    </p>
+    <p>
+        Full paper available <a href="https://github.com/JI-0/WebRTC-Dummy-Client/blob/master/paper/Utilizing%20the%20WebRTC%20P2P%20protocol%20to%20reduce%20infrastructure%20costs%20of%20media%20streaming.pdf"><button type="button">here</button></a>
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Solution</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        I decided to create the server using Go, as it is very well suited for networking and building systems. The server uses 
+        a "manager" which can create peers as they join and manage the connections between them. If a peer requests to join a 
+        stream, the server provides a streamer at random, but that can easily be expanded in a way that the peer can request a 
+        specific stream. The server then acts as a relay to move the ICE candidates between the peers and creates a peer to peer 
+        connection. After that the peer receiving the stream is disconnected, but the streaming (upgraded) peer remains connected 
+        and waits for new peers.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Demo</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The project is publicly available on GitHub <a href="https://github.com/JI-0/WebRTC_SignalingServer">here</a>.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        A demo is available under the Posts, WebRTC testing. The post is a collection of multiple WebRTC projects created to work 
+        together and act as a demo of testing WebRTC for streaming purposes. You may take a look 
+        <a href="/posts/webrtc">here</a>.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Please feel free to take a look!
+    </p>
+    <a data-aos="fade-in" data-aos-delay="300" href="/posts/webrtc"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a>
+    <a data-aos="fade-in" data-aos-delay="300" href="https://github.com/JI-0/WebRTC_SignalingServer" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a>
+</Layout>
+<style>
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+</style>

@@ -1,0 +1,350 @@
+---
+import Layout from '../layouts/Layout.astro';
+import WorksContent from './works-content.astro';
+import Footer from '../components/Footer.astro';
+const pageTitle = "Jan Ivkovič Miura";
+---
+<Layout pageTitle={pageTitle} footerHidden={true} data-astro-reload>
+    <div class="gif">
+        <img width="300" height="259" alt="RaccoonSpaceGif" src="/space.webp"/>
+    </div>
+    <div class="wrapper">
+      <div>
+        <h1>Jan Ivkovič Miura</h1>
+        <small>Full-Stack Engineer</small>
+      </div>
+      <img src="/profile.png" alt="Profile" class="profile">
+    </div>
+    <h2>About</h2>
+    <p>
+        As a seasoned full stack developer with a passion for crafting seamless and innovative digital solutions, I am eager to contribute to a diverse range of projects. My experience spans both front-end and back-end technologies, allowing me to take on various roles and responsibilities with agility and expertise. Whether you're looking for a full-time team member or a part-time collaborator on a project basis, I offer the flexibility and skill set to meet your needs. 
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        My commitment to staying current with industry trends and technologies ensures that I bring fresh perspectives and solutions to every task. Let’s discuss how my adaptability and technical prowess can drive your projects forward and help you achieve your goals.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        I am open to opportunities as a full-time employee or as a part-time contributor, whether on a per-project basis or at an hourly rate.
+    </p>
+    <div data-aos="fade-in" data-aos-delay="300" class="button">
+        <a href="/works">
+            <button data-test="my_portfolio" class="portfolio-button">My portfolio</button>
+        </a>
+    </div>
+    <br>
+    <div data-aos="fade-in" data-aos-delay="300" class="button">
+        <a href="/cv">
+            <button class="cv-button">My CV</button>
+        </a>
+    </div>
+    <h2 data-aos="fade-in" data-aos-delay="300">Skills</h2>
+    <h3 data-aos="fade-in" data-aos-delay="300">Programming languages</h3>
+    <div data-aos="fade-in" data-aos-delay="300" class="link-images">
+        <img title="Golang" alt="Go" src="https://go.dev/blog/go-brand/Go-Logo/SVG/Go-Logo_Blue.svg"/>
+        <img title="Dart" alt="Dart" src="/dart.svg"/>
+        <img title="Python" alt="Python" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg"/>
+        <img title="Lua" alt="Lua" src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Lua-Logo.svg"/>
+        <img title="Swift" alt="Swift" src="https://developer.apple.com/swift/images/swift-logo.svg"/>
+        <img title="C" alt="C" src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg"/>
+        <img title="C++" alt="C++" src="https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg"/>
+        <img title="TypeScript" alt="TypeScript" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-plain.svg"/>
+        <img title="JavaScript" alt="JavaScript" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-plain.svg"/>
+        <img title="PHP" alt="PHP" src="https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg"/>
+        <img title="HTML" alt="HTML" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-plain.svg"/>
+        <img title="CSS" alt="CSS" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain.svg"/>
+        <img title="PineScript" alt="PineScript" src="/pine-script.svg"/>
+        <img title="Bash" alt="Bash" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg"/>
+        
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="skills">
+        <ul>
+            <li>Golang</li>
+            <li>Lua</li>
+            <li>TypeScript</li>
+            <li>HTML/CSS</li>
+        </ul>
+        <ul>
+            <li>Dart</li>
+            <li>Swift</li>
+            <li>JavaScript</li>
+            <li>Pine Script</li>
+        </ul>
+        <ul>
+            <li>Python</li>
+            <li>C/C++</li>
+            <li>PHP</li>
+            <li>Bash</li>
+        </ul>
+    </div>
+    <h3 data-aos="fade-in" data-aos-delay="300">Frameworks/Tools</h3>
+    <div data-aos="fade-in" data-aos-delay="300" class="link-images">
+        <img title="Flutter" alt="Flutter" src="/flutter.svg"/>
+        <img title="React" alt="React" src="https://www.svgrepo.com/show/452092/react.svg"/>
+        <img class="astro" title="Astro" alt="Astro"/>
+        <img title="WordPress" alt="WordPress" src="https://upload.wikimedia.org/wikipedia/commons/9/98/WordPress_blue_logo.svg"/>
+        <img title="Godot" alt="Godot" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Godot_icon.svg"/>
+        <img title="Node.js" alt="Node.js" src="https://static-00.iconduck.com/assets.00/node-js-icon-454x512-nztofx17.png"/>
+        <img class="cypress" title="Cypress" alt="Cypress"/>
+        <img title="Nginx" alt="Nginx" src="https://www.svgrepo.com/show/373924/nginx.svg"/>
+        <img title="Apache" alt="Apache" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Apache_Feather_Logo.svg"/>
+        <img title="GCC" alt="GCC" src="https://upload.wikimedia.org/wikipedia/commons/a/af/GNU_Compiler_Collection_logo.svg"/>
+        <img title="LLVM/Clang" alt="LLVM/Clang" src="/LLVM.png"/>
+        <img title="WebAssembly" alt="WebAssembly" src="https://upload.wikimedia.org/wikipedia/commons/1/1f/WebAssembly_Logo.svg"/>
+        <img title="Emscripten" alt="Emscripten" src="https://upload.wikimedia.org/wikipedia/commons/4/47/Emscripten_logo.svg"/>
+        <img title="Docker" alt="Docker" src="https://cdn-icons-png.flaticon.com/512/919/919853.png"/>
+        <img title="Neovim" alt="Neovim" src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Neovim-mark.svg"/>
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="skills">
+        <ul>
+            <li>Flutter</li>
+            <li>WordPress</li>
+            <li>Cypress</li>
+            <li>GCC</li>
+            <li>Emscripten</li>
+        </ul>
+        <ul>
+            <li>React</li>
+            <li>Godot</li>
+            <li>Nginx</li>
+            <li>Clang</li>
+            <li>Docker</li>
+        </ul>
+        <ul>
+            <li>Astro</li>
+            <li>Node.js</li>
+            <li>Apache</li>
+            <li>WASM</li>
+            <li>Neovim</li>
+        </ul>
+    </div>
+    <h3 data-aos="fade-in" data-aos-delay="300">Databases</h3>
+    <div data-aos="fade-in" data-aos-delay="300" class="link-images">
+        <img title="BadgerDB" alt="BadgerDB" src="https://raw.githubusercontent.com/dgraph-io/badger/main/images/diggy-shadow.png"/>
+        <img title="MongoDB" alt="MongoDB" src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg"/>
+        <img title="Redis" alt="Redis" src="/redis.svg"/>
+        <img title="Postgres" alt="Postgres" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain.svg"/>
+        <img title="MySQL" alt="MySQL" src="https://www.svgrepo.com/show/303251/mysql-logo.svg"/>
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="skills">
+        <ul>
+            <li>BadgerDB</li>
+            <li>PostgreSQL</li>
+        </ul>
+        <ul>
+            <li>MongoDB</li>
+            <li>MySQL</li>
+        </ul>
+        <ul>
+            <li>Redis</li>
+</ul>
+    </div>
+    <h3 data-aos="fade-in" data-aos-delay="300">Operating Systems</h3>
+    <div data-aos="fade-in" data-aos-delay="300" class="link-images">
+        <img class="macos" title="MacOS" alt="MacOS"/>
+        <img title="Ubuntu" alt="Ubuntu" src="/ubuntu.svg"/>
+        <img title="Debian" alt="Debian" src="https://www.svgrepo.com/show/353640/debian.svg"/>
+        <img title="Pop!_OS" alt="Pop!_OS" src="https://upload.wikimedia.org/wikipedia/commons/4/46/Pop%21_OS_Icon.svg"/>
+        <img title="Windows" alt="Windows" src="https://upload.wikimedia.org/wikipedia/commons/8/87/Windows_logo_-_2021.svg"/>
+        <img title="iOS" alt="iOS" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/IOS_logo.svg"/>
+        <img title="Android" alt="Android" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Android_logo_2019_%28stacked%29.svg"/>
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="skills">
+        <ul>
+            <li>MacOS</li>
+            <li>Pop!_OS</li>
+            <li>Android</li>
+        </ul>
+        <ul>
+            <li>Ubuntu</li>
+            <li>Windows</li>
+        </ul>
+        <ul>
+            <li>Debian</li>
+            <li>iOS</li>
+        </ul>
+    </div>
+    <h2 data-aos="fade-in" data-aos-delay="300">Interests</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Lately I am most interested in building servers, networking, cybersecurity, encryption, however, I have also 
+        dabbled in building robots, using Raspberry Pis, using/building AI, configuring Linux systems and so on. 
+        I enjoy solving problems and building applications which are innovative, new and exciting.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Outside of programming and IT, I enjoy hiking, skiing, and going on nature walks. I also enjoy sipping on a matcha latte from time to time.
+    </p>
+    <br>
+    <div data-aos="fade-in" data-aos-delay="300" class="portfolio-text">
+        <a id="portfolio-link" class="portfolio-link">
+            <h2 id="tst">Portfolio</h2>
+        </a>
+    </div>
+    <a id="portfolio-arrows">
+        <dir data-aos="fade-in" data-aos-delay="300" class="arrows">
+            <dir class="arrow-wrapper">
+                <img id="bottom-arrow" src="/arrow-down.svg" alt="arrow-down"/>
+                <img id="top-arrow" src="/arrow-down-gradient.svg" alt="arrow-down"/>
+            </dir>
+        </dir>
+    </a>
+    <br><br><br>
+    <div id="works">
+        <WorksContent />
+        <Footer />
+    </div>
+</Layout>
+<script src="../js/scroll-load.js"></script>
+<style>
+    /* profile image */
+    h1 {
+        text-align: left;
+    }
+
+    .wrapper {
+        display: flex;
+        gap: 389px;
+    }
+
+    .profile {
+        height: 116px;
+        border-radius: 50%;
+    }
+
+    @media only screen and (max-width: 900px) {
+        .wrapper {
+            gap: 89px;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        .wrapper {
+            gap: 1px;
+        }
+        .profile {
+            height: 106px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    .portfolio-button {
+        background: rgba(0,0,0,0);
+        border: 2px solid #78c2ad;
+        border-radius: 8px;
+        color: #78c2adb3;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    .portfolio-button:hover {
+        background-color: #78c2ad;
+        color: #1e1e2e;
+        cursor: pointer;
+    }
+
+    .cv-button {
+        background: rgba(0,0,0,0);
+        border: 2px solid #1cbbff;
+        border-radius: 8px;
+        color: #1cbbff;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    .cv-button:hover {
+        background-color: #1cbbff;
+        color: #1e1e2e;
+        cursor: pointer;
+    }
+
+    .button {
+        text-align: center;
+    }
+
+    /* Skill images */
+    .link-images {
+        align-items: center;
+    }
+
+    .link-images img {
+        max-height: 46px;
+        max-width: 46px;
+        min-height: 46px;
+        min-width: 46px;
+        height: 46px;
+        width: 46px;
+        margin: 16px 4px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .link-images img {
+            max-height: 30px;
+            max-width: 30px;
+            min-height: 30px;
+            min-width: 30px;
+            height: 30px;
+            width: 30px;
+            margin: 16px 1px;
+        }
+    }
+
+    .skills {
+        display: flex;
+        max-width: 100%;
+        justify-content: space-between;
+    }
+    
+    .portfolio-text {
+        text-align: center;
+    }
+
+    .portfolio-link {
+        text-decoration: none;
+    }
+
+    .arrows {
+        margin: auto;
+        width: 160px;
+    }
+
+    .arrow-wrapper {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        max-width: 120px;
+        max-height: 120px;
+        overflow: hidden;
+    }
+
+    #bottom-arrow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 120px;
+        height: 120px;
+        /* border: 4px red solid; */
+    }
+
+    #top-arrow {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 100px;
+        height: 100px;
+        margin-top: -150%;
+        transform: translateY(150%);
+    }
+
+    #works {
+        display: none;
+    }
+</style>

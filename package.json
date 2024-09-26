@@ -1,0 +1,25 @@
+{
+  "name": "milky-way",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "aos": "^2.3.4",
+    "astro": "^3.2.3",
+    "bowser": "^2.11.0",
+    "jquery": "^3.7.1",
+    "pdf.js": "^0.1.0",
+    "react-parallax-tilt": "^1.7.239",
+    "swiper": "^11.1.14",
+    "tilt.js": "^1.2.1"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0"
+  }
+}

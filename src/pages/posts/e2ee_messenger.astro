@@ -1,0 +1,197 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+const pageTitle = "E2EE messenger for iOS";
+---
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" width="500" height="259" alt="LevelBuilder" src="/E2EE_messenger.png"/>
+    </div>
+    <h1>E2EE messenger for iOS</h1>
+    <small>Swift</small>
+    <small>Go/Golang</small>
+    <small>Networking</small>
+    <small>Encryption</small>
+    <p></p>
+    <a href="#demo"><button type="button"><img width="20" height="20" src="/live.svg"/> Demo</button></a>
+    <h2>Problem/Challenge</h2>
+    <p>
+        Though there are many messaging apps available online, many do not offer a satisfactory level of security and privacy, 
+        or require the user to trust the application provider. Though there are some platforms such as Signal and WhatsApp, 
+        which offer true E2E encryption, they do so using asymmetric encryption, meaning that they in theory could be broken, 
+        and they require a phone number to be linked to an account, deanonymizing the user at best. As such I decided to 
+        create an alternative that is both user and privacy/security centric, where the user does not need to trust any actor 
+        in the information flow, including the ISP provider and platform server manager/provider.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Solution</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        In order to truly not need to trust anyone in the data flow from one device to another, the best method is to use 
+        a symmetric key encryption such as AES (the system uses AES-GCM), which has to be shared between two devices in a 
+        secure way, preferably in person. This way, in theory, the only ones capable of decrypting a message would be the two 
+        devices with the key, that can be periodically changed. I have thus far created a messaging app for iOS using SwiftUI 
+        and Go for the backend server. I created a NotificationServiceExtension to decrypt messages in the background 
+        when they are sent as Push Notifications (when the device is not connected to the Go server). Now I am focusing 
+        on implementing an audio and video call option using WebRTC and CallKit.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The project is not publicly available as it is a work in progress, but some code snippets from the project 
+        are available below:
+    </p>
+    <div data-aos="fade-in" data-aos-delay="300" class="code-box">
+    <Code code={`
+extension String {
+    func isValidEmail() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", options: .caseInsensitive)
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+    func isValidUsername() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "[a-zA-Z0-9]")
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+    func isValidPassword() -> Bool {
+        let regex = try! NSRegularExpression(pattern: "(?=.{8,})")
+        return regex.firstMatch(in: self, range: NSRange(location: 0, length: count)) != nil
+    }
+}
+    `} lang="swift" />
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="code-box">
+    <Code code={`
+private func addContact() {
+    let newActiveKey = SymmetricKey(size: .bits256).withUnsafeBytes{
+        return Data(Array($0)).base64EncodedString()
+    }
+    //Check if exists
+    let fetchRequest: NSFetchRequest<Contact>
+    fetchRequest = Contact.fetchRequest()
+    fetchRequest.predicate = NSPredicate(format: "nickname == '\(newContact)'")
+    var existantUsers: [Contact]
+    do {
+        existantUsers = try self.viewContext.fetch(fetchRequest)
+    } catch { return }
+    if existantUsers.count == 0 {
+        //Create new
+        let newContactO = Contact(context: viewContext)
+        newContactO.user = newContact
+        newContactO.nickname = newContact
+        newContactO.timestamp = Date()
+        newContactO.group = false
+        newContactO.sharedKey = sharedKey
+        newContactO.activeKey = newActiveKey
+        newContactO.oldActiveKey = ""
+        newContactO.icon = ""
+        newContactO.iconData = Data()
+        newContactO.descriptionText = ""
+        newContactO.newMessage = false
+        newContactO.messageTimestamp = Date()
+        newContactO.lastSeenTimestamp = Date()
+        newContactO.latestMessage = ""
+        newContactO.secure = true
+    } else {
+        //Refresh
+        let refreshingContact = existantUsers.first
+        refreshingContact?.user = newContact
+        refreshingContact?.nickname = newContact
+        refreshingContact?.timestamp = Date()
+        refreshingContact?.group = false
+        refreshingContact?.sharedKey = sharedKey
+        refreshingContact?.activeKey = newActiveKey
+        refreshingContact?.secure = true
+    }
+    do {
+        try viewContext.save()
+    } catch {
+        let nsError = error as NSError
+        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+    }
+    model.sendMessage(contact: newContact, group: false, receiver: newContact, hash: SymmetricKey(size: .bits256).withUnsafeBytes{ return Data(Array($0)).base64EncodedString() }, key: sharedKey, text: "NEW_CONTACT:\(newActiveKey):\(model.profilePicture)")
+    newContact = ""
+    sharedKey = ""
+}
+    `} lang="swift" />
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="code-box">
+    <Code code={`
+ForEach(messages) { message in
+    let minutesAgo = Int(-message.timestamp!.timeIntervalSinceNow)/60
+    let failedToSend = (Int(message.status) == 0 && minutesAgo > 5) || (message.notReceivedBy != "" && minutesAgo > 10080)
+    let bySelf = model.username == message.by
+    let illegible = message.text!.starts(with: "<ILLEGIBLE>") || message.reaction!.contains("<UnencryptedRequest>")
+    MessageBubbleView(bySelf: bySelf, by: message.by!, encrypted: message.encrypted, group: group, failedToSend: failedToSend, timestamp: message.timestamp!, status: Int(message.status), text: message.text!, metadata: message.metadata ?? Data(), reaction: message.reaction!)
+    `} lang="swift" />
+    </div>
+    <h2 data-aos="fade-in" data-aos-delay="300" id="demo">Demo</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        A demo video of the project is available below. Please feel free to take a look!
+    </p>
+    <div data-aos="fade-in" data-aos-delay="300" class="gif">
+        <video class="video" controls>
+            <source src="/E2EE_messenger_login.mov">
+        </video>
+    </div>
+    <div data-aos="fade-in" data-aos-delay="300" class="gif">
+        <video class="video" controls>
+            <source src="/E2EE_messenger_message.MP4">
+        </video>
+    </div>
+</Layout>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    /* Video */
+    .video {
+        background-color: white;
+        border-radius: 8px;
+        width: 500px;
+        height: 1084px;
+    }
+
+    @media (max-width: 600px) {
+        .video {
+            width: 300px;
+            height: 650px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+</style>

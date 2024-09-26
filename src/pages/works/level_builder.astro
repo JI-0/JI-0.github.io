@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+const pageTitle = "Level builder";
+---
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" width="500" height="259" alt="LevelBuilder" src="/level-builder.png"/>
+    </div>
+    <h1>Level builder</h1>
+    <small>GDScript</small>
+    <small>Randomization and seeds</small>
+    <small>Vector math</small>
+    <p></p>
+    <!-- <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a> -->
+    <!-- <a href="" target="_blank"><button><img width="20" height="20" src="/github-mark.svg"/> GitHub</button></a> -->
+    <h2>Problem/Challenge</h2>
+    <p>
+        As part of my working on the mobile game Portal Ninja with Cloud Base Games Ltd. I was tasked to create a level builder,
+        which would allow for simple and fast creation of levels that both level designers, as well as players could use. It 
+        had to provide variety in terms of rooms, elements and assets being used, but also intuitive and simple level iteration.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Solution</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        I decided that the optimal solution for this would be to create a level builder, where levels could be made with a drawing
+        style application, where each bloc/pixel would represent a 4x4 area in terms of the game level. The levels are built in 
+        a few steps. First the level shape is determined with drawing in the black area, or by generating one at random or with a 
+        seed. Then, the corridors are created (blue blocks), made wither by hand or generated. Next based on the corridors drawn 
+        in the blueprint, rooms are generated with passages to ensure they are all accessible either through the corridors or 
+        other rooms. Finally, the assets are chosen for the level with other options before the whole level is generated.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The project is not publicly available, but some code snippets from the project are available below:
+    </p>
+    <div data-aos="fade-in" data-aos-delay="300" class="code-box">
+    <Code data-aos="fade-in" data-aos-delay="300" code={`
+func get_corridors(img) -> Array:
+    var corridors : Array = []
+    img.lock()
+    for l in range(50):
+        for m in range(50):
+            if img.get_pixel(l, m) == Color.blue:
+                corridors.append(Vector2(l, m))
+    img.unlock()
+    return corridors
+    `} lang="gdscript" />
+    <Code data-aos="fade-in" data-aos-delay="300" code={`
+func remove_done_chunks():
+    var opts = get_options()
+    img0.lock()
+    while opts.size() > 0:
+        
+        find_neighbor_cells(opts[0], opts)
+        for i in recursive_buff:
+            opts.erase(i)
+        if recursive_buff.size() < 15 +  80 * get_node("densityHScrollBar").value / 10:
+            for i in recursive_buff:
+                img0.set_pixelv(i, Color.green)
+        recursive_buff = []
+    img0.unlock()
+
+func find_neighbor_cells(pos, data):
+    recursive_buff.append(pos)
+    if recursive_buff.size() < 100:
+        if not recursive_buff.has(Vector2(pos.x - 1, pos.y)) and data.has(Vector2(pos.x - 1, pos.y)):
+            find_neighbor_cells(Vector2(pos.x - 1, pos.y), data)
+        if not recursive_buff.has(Vector2(pos.x + 1, pos.y)) and data.has(Vector2(pos.x + 1, pos.y)):
+            find_neighbor_cells(Vector2(pos.x + 1, pos.y), data)
+        if not recursive_buff.has(Vector2(pos.x, pos.y - 1)) and data.has(Vector2(pos.x, pos.y - 1)):
+            find_neighbor_cells(Vector2(pos.x, pos.y - 1), data)
+        if not recursive_buff.has(Vector2(pos.x, pos.y + 1)) and data.has(Vector2(pos.x, pos.y + 1)):
+            find_neighbor_cells(Vector2(pos.x, pos.y + 1), data)
+    `} lang="gdscript" />
+    </div>
+    <!-- <h2>Demo</h2> -->
+    <!-- <p> -->
+    <!--     The project is available as a live demo through the link below. Please be aware it might take a minute or two to load as  -->
+    <!--     it was originally intended and ran on mobile devices (iOS, Android) and the small part of code was then ported to run  -->
+    <!--     on HTML. -->
+    <!-- </p> -->
+    <!-- <p> -->
+    <!--     Please feel free to take a look! -->
+    <!-- </p> -->
+    <!-- <a href="https://the.testingwebrtc.com/lb" target="_blank"><button><img width="20" height="20" src="/live.svg"/> Live demo</button></a> -->
+</Layout>
+<style>
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+</style>

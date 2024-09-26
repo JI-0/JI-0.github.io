@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const pageTitle = "WebRTC stress testing";
+---
+<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="../../webrtc_demo.ts"></script>
+
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" alt="WebRTC_Stress_Testing" src="/webrtc_experiment.svg"/>
+    </div>
+    <h1>WebRTC stress testing</h1>
+    <small>Go</small>
+    <small>Networking</small>
+    <small>Linux</small>
+    <p></p>
+    <a href="#demo"><button type="button"><img width="20" height="20" src="/live.svg"/> Demo</button></a>
+    <p></p>
+    <a href="/works"><button type="button">Projects</button></a>
+    <h2>Project</h2>
+    <p>
+        As part of my Master's thesis research on utilizing WebRTC for streaming of content at Sophia university (上智大学) I 
+        created a stress test system in order to analyze the maximum number of peers a streamer client can connect to before 
+        encountering connection issues due to performance and networking limitations.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Full paper available <a href="https://github.com/JI-0/WebRTC-Dummy-Client/blob/master/paper/Utilizing%20the%20WebRTC%20P2P%20protocol%20to%20reduce%20infrastructure%20costs%20of%20media%20streaming.pdf"><button type="button">here</button></a>
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Although traditional streaming systems can support millions of clients as they distribute the stream through many servers, 
+        the proposed alternative model is a more cost efficient solution as the streamer's device is responsible for transmitting 
+        data to subscribers of the stream and uses the WebRTC peer to peer technology to bypass the use of servers, 
+        reducing infrastructure costs. This, however, represents a huge load for the client streaming device, limiting the 
+        number of peers capable to establinsh a reliable connection. For this purpose I created a sort of testing suite 
+        that can test and determine the maximum number of peers that can connect simultaneously without experiencing 
+        networking issues.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Setup</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        First the streamer client connects to the server and requests to connect and then waits for subscribers that wish to 
+        connect to the stream. Either a real subscriber client can connect to a stream, or the cummy client system can connect 
+        which creates a new dummy client every second until reaching the desired number of dummy clients (maximum 100). The 
+        dummy client system also monitors the packets being received by all of the active clients, as well as when a new peer 
+        connects until the desired number and then notifies about each second that passes after that. This way we can (also 
+        using timestamps taken of when each packet arrived), calculate the average number of packets received per second 
+        for each peer and determine the average, minimum and maximum.
+    </p>
+    <br data-aos="fade-in" data-aos-delay="300">
+    <h2 data-aos="fade-in" data-aos-delay="300" id="demo">Demo</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The demo works by first selecting the stream resolution and starting a "streamer". Then it is possible to create a 
+        "subscriber" client that can observe the stream (from the same device or a separate one). To run the test the number 
+        of peers should be selected and the test run.
+    </p>
+    <div data-aos="fade-in" data-aos-delay="300" class="gif">
+        <video class="main-img" controls>
+            <source src="/webrtc_video_demo.mov">
+        </video>
+    </div>
+    <!-- <p data-aos="fade-in" data-aos-delay="300" style="color:red;"> -->
+    <!--     Note: more unusual network configurations or firewalls might prevent the test from running. -->
+    <!-- </p> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300" style="color:red;"> -->
+    <!--     Note: the dummy client cluster test requires the demoDummyCli to run on the local machine. This can be run either  -->
+    <!--     by downloading and running the application (currently only built for Macs with Apple silicone <a style="color:blue" -->
+    <!--     href="https://github.com/JI-0/demoDummyCli/releases" target="_blank">here</a>) or by running the  -->
+    <!--     application with run instructions. -->
+    <!-- </p> -->
+    <!-- <h2 data-aos="fade-in" data-aos-delay="300">Test</h2> -->
+    <!-- <label data-aos="fade-in" data-aos-delay="300" for="streamID">Stream ID:</label> -->
+    <!-- <input data-aos="fade-in" data-aos-delay="300" type="text" id="streamID" name="streamID" /> -->
+    <!-- <form data-aos="fade-in" data-aos-delay="300"> -->
+    <!--     <select id="resolution"> -->
+    <!--         <option value="640x480">640x480</option> -->
+    <!--         <option value="1280x720">1280x720</option> -->
+    <!--         <option value="1920x1080">1920x1080</option> -->
+    <!--     </select> -->
+    <!-- </form> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300"></p> -->
+    <!-- <button data-aos="fade-in" data-aos-delay="300" id="startStreamerBtn">Start streamer</button> -->
+    <!-- <div data-aos="fade-in" data-aos-delay="300" class="gif"> -->
+    <!--     <video id="streamer" autoplay playsinline></video> -->
+    <!-- </div> -->
+    <!-- <button data-aos="fade-in" data-aos-delay="300" id="connectSubscriberBtn">Start subscriber</button> -->
+    <!-- <div data-aos="fade-in" data-aos-delay="300" class="gif"> -->
+    <!--     <video id="subscriber" autoplay playsinline></video> -->
+    <!-- </div> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300">Dummy clients</p> -->
+    <!-- <div data-aos="fade-in" data-aos-delay="300" class="sliderContainer"> -->
+    <!--     <input type="range" min="1" max="100" value="50" class="slider" id="numOfDummyClients"> -->
+    <!-- </div> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300" id="numDummyClientsTxt">Number of dummy clients: </p> -->
+    <!-- <br data-aos="fade-in" data-aos-delay="300"> -->
+    <!-- <button data-aos="fade-in" data-aos-delay="300" id="startDummyClientsBtn" disabled>Start dummy cli test</button> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300" id="currentNumDummyClientsTxt">Current number of clients: 0</p> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300"></p> -->
+    <!-- <div data-aos="fade-in" data-aos-delay="300" id="dummyClientProgress"> -->
+    <!--     <div id="dummyClientProgressBar"></div> -->
+    <!-- </div> -->
+    <!-- <p data-aos="fade-in" data-aos-delay="300"></p> -->
+    <!-- <canvas data-aos="fade-in" data-aos-delay="300" id="packetChart"></canvas> -->
+</Layout>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+        width: 500px;
+        height: 259px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    /* Video */
+    video {
+        background-color: black;
+        margin-bottom: 20px;
+        width: 500px;
+    }
+
+    @media (max-width: 600px) {
+        video {
+            width: 300px;
+        }
+    }
+
+    /* Slider */
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;   
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%; 
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    /* Dummy client progress */
+    #dummyClientProgress {
+        width: 100%;
+        background-color: grey;
+    }
+
+    #dummyClientProgressBar {
+        width: 0%;
+        height: 30px;
+        background-color: #04AA6D;
+    }
+
+    /* Graph */
+    canvas {
+        width: 100%;
+        max-width: 700px;
+        /* height: 500px; */
+    }
+
+    @media (max-width: 600px) {
+        canvas {
+            width: 300px;
+            /* height: 200px; */
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+
+    button:disabled {
+        background-color: gray;
+        color: darkgray;
+    }
+</style>
