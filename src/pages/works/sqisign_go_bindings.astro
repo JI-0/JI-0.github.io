@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Code } from 'astro:components';
+const pageTitle = "E2EE messenger for iOS";
+---
+<Layout pageTitle={pageTitle}>
+    <div class="gif">
+        <img class="main-img" width="500" height="259" alt="SQIsign PQC" src="/pqc-libraries.svg"/>
+    </div>
+    <h1>SQIsign PQC for Go</h1>
+    <small>Cryptography</small>
+    <small>Quantum computing</small>
+    <small>CGO</small>
+    <small>Go/Golang</small>
+    <p></p>
+    <h2>Task</h2>
+    <p>
+        The advancement in quantum computers has led to a rise in interest from companies to plan ahead and prepare their infrastructure for a so-called post quantum world, where certain commonly used cryptographic algorithms are expected to become deprecated as they will be "easily" cracked by quantum computers. One major area, which is expected to face a change is the existing handshake algorithms such as ECDH (Elliptic-curve Diffie–Hellman) and digital signatures such as X.509.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Currently there are many new alternatives being researched as possible replacements, however, each has its own downsides. Some have very large public keys and signatures - relevant when transferring them over the internet - and others are quite slow in terms of signing and verification. The table below from <a href="https://blog.cloudflare.com/sizing-up-post-quantum-signatures/" target="_blank">Cloudflare</a> represents some alternatives to the current signature schemes.
+    </p>
+    <img data-aos="fade-in" data-aos-delay="300" class="content-img" alt="PQC Signatures" src="https://cf-assets.www.cloudflare.com/slt3lc6tev37/3jWjoMzawYpHGELyZHZYxl/2420cbd2ae3c7309f8369c10cb12f982/Screenshot-2021-11-22-at-13.17.20.png" />
+    <p data-aos="fade-in" data-aos-delay="300">
+        As seen on the table, one of the more interesting PQC signature schemes is SQIsign, as it has both relatively small sized public keys and signatures, even though it is significantly slower than other alternatives when it comes to signing and verification. This makes SQIsign ideal for certain types of applications that have strict data size requirements; however, the library is written primarily in C and is not rewritten or provide bindings for other programming languages.
+    </p>
+    <h2 data-aos="fade-in" data-aos-delay="300">Solution</h2>
+    <p data-aos="fade-in" data-aos-delay="300">
+        I took it upon myself to build bindings for the library for the Go programming language. I did this by creating bindings for the language using <a href="https://pkg.go.dev/cmd/cgo" target="_blank">cgo</a>. As the library only needs to expose three functions - namely: keygen, sign, and verify - , it was fairly simple to complete the task.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        The <a href="https://github.com/JI-0/the-sqisign-go" target="_blank">project repo</a> is publicly available on <a href="https://github.com/JI-0" target="_blank">my GitHub</a>.
+    </p>
+    <p data-aos="fade-in" data-aos-delay="300">
+        Currently I have also been building bindings for this library for Dart(Flutter) and JavaScript, in order to make it accessible on multiple platforms and in various forms - as packages for apps, WASM files for the web. This work is not public yet, but I will add it to this article when it is released.
+    </p>
+</Layout>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Main image */
+    .main-img {
+        background-color: white;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-img {
+            width: 300px;
+            height: 155px;
+        }
+    }
+
+    .content-img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    /* Video */
+    .video {
+        background-color: white;
+        border-radius: 8px;
+        width: 500px;
+        height: 1084px;
+    }
+
+    @media (max-width: 600px) {
+        .video {
+            width: 300px;
+            height: 650px;
+        }
+    }
+
+    /* small */
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    /* Button */
+    button {
+        height: 40px;
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 8px;
+        color: black;
+        font: 600 16px 'Josefin Sans', sans-serif;
+        padding: 8px 16px;
+        transition: background-color 0.4s, color 0.4s;
+    }
+
+    button:hover {
+        background-color: gray;
+        color: red;
+    }
+</style>

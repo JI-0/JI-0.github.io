@@ -48,9 +48,78 @@ import 'swiper/css/bundle';
     <img width="300" height="259" alt="RaccoonLaptopGif" src="/laptop.webp"/>
 </div>
 <h2 data-aos="fade-in" data-aos-delay="300">Highlights</h2>
-<h2 data-aos="fade-in" data-aos-delay="300">Projects</h2>
+<!-- <a href="/works/messaging_app_ui" class="highlight-link"> -->
+<!--     <div data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine"> -->
+<!--         <div class="highlight-r highlight"> -->
+<!--             <img class="highlight-img" alt="Messaging app UI" src="/messaging_app_ui.png"/> -->
+<!--             <div> -->
+<!--                 <h2>Messaging app UI</h2> -->
+<!--                 <small>Front-end</small> -->
+<!--                 <small>Flutter</small> -->
+<!--                 <small>Dart</small> -->
+<!--                 <p>Published on Aug 27, 2024</p> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </div> -->
+<!-- </a> -->
+<a href= "/works/sqisign_go_bindings" class="highlight-link">
+    <div data-aos="fade-up-right" data-aos-delay="300" data-aos-easing="ease-in-sine">
+        <div class="highlight-l highlight">
+            <div class="highlight-l-large">
+                <h2>SQIsign PQC for Go</h2>
+                <small>Cryptography</small>
+                <small>Quantum computing</small>
+                <small>CGO</small>
+                <small>Go/Golang</small>
+                <p>Published on April 5, 2024</p>
+            </div>
+            <img class="highlight-img" alt="PQC libraries" src="/pqc-libraries.svg"/>
+            <div class="highlight-l-small">
+                <h2>SQIsign PQC for Go</h2>
+                <small>Cryptography</small>
+                <small>Quantum computing</small>
+                <small>CGO</small>
+                <small>Go/Golang</small>
+                <p>Published on April 5, 2024</p>
+            </div>
+        </div>
+    </div>
+</a>
+<a href="/works/trading_strategy" class="highlight-link">
+    <div data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine">
+        <div class="highlight-r highlight">
+            <img class="highlight-img" alt="Trading strategy testing in Pine Script" src="/trading.png"/>
+            <div>
+                <h2>Trading strategy testing in Pine Script</h2>
+                <small>Pine Script</small>
+                <small>TradingView</small>
+                <small>Analysis</small>
+                <p>Published on Feb 12, 2024</p>
+            </div>
+        </div>
+    </div>
+</a>
+<h2 data-aos="fade-in" data-aos-delay="300">All Projects</h2>
 <div data-aos="fade-in" data-aos-delay="300" class="swiper">
     <div class="swiper-wrapper">
+        <div class="swiper-slide">
+        <Card
+            href="/works/sqisign_go_bindings"
+            image="/pqc-libraries.svg"
+            title="SQIsign PQC for Go"
+            body="Building bindings for SQIsign post-quantum cryptography for Go"
+            badges={["/github-mark.svg"]}
+        />
+        </div>
+        <div class="swiper-slide">
+        <Card
+            href="/works/trading_strategy"
+            image="/trading.png"
+            title="Trading strategy testing in Pine Script"
+            body="Building a trading strategy inside TradingView using Pine Script"
+            badges={["/code.svg"]}
+        />
+        </div>
         <div class="swiper-slide">
         <Card
             href="/works/webrtc_dummy_client"
@@ -92,3 +161,58 @@ import 'swiper/css/bundle';
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
 </div>
+<style>
+    .highlight {
+        padding-top: 36px;
+        padding-bottom: 36px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .highlight-img {
+        width: 56%;
+        border-radius: 12px;
+    }
+
+    .highlight-l {
+        text-align: left;
+        transform: skew(0,6deg);
+    }
+
+    .highlight-r {
+        text-align: right;
+        transform: skew(0,-6deg);
+    }
+
+
+    .highlight-l-small {
+        display: none;
+    }
+    
+    small {
+        background-color: #584966;
+        color: #fdebf3;
+        border-radius: 6px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 600;
+        padding: 0.3em 0.6em 0.2em;
+    }
+
+    @media (max-width: 900px) {
+        .highlight {
+            flex-direction: column;
+        }
+
+        .highlight-img {
+            width: 100%;
+        }
+
+        .highlight-l-large {
+            display: none;
+        }
+
+        .highlight-l-small {
+            display: block;
+        }
+    }
+</style>

@@ -145,3 +145,13 @@ document
     window.scrollTo(0, pageSize - window.screenY / 2);
     open = true;
   });
+
+document
+  .getElementById("portfolio-click")
+  .addEventListener("click", function() {
+    document.getElementById("works").style.setProperty("display", "block");
+    aosInit();
+    tiltInit();
+    window.scrollTo(0, pageSize - window.screenY / 2);
+    open = true;
+  });

@@ -56,7 +56,7 @@ p {
 
 /* Navigation Bar */
 .nav-bg {
-  width: 838px;
+  width: 840px;
   height: 50px;
   position: fixed;
   overflow: hidden;
@@ -142,6 +142,11 @@ a:focus {
   content: url("https://upload.wikimedia.org/wikipedia/commons/2/22/MacOS_logo_%282017%29.svg");
 }
 
+.highlight-link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
 .cr {
   color: #000000;
 }
@@ -224,6 +229,10 @@ html.light {
 
 .light .macos {
   content: url("https://upload.wikimedia.org/wikipedia/commons/3/30/MacOS_logo.svg");
+}
+
+.light .highlight-link {
+  color: #000000;
 }
 
 .light .cr {
