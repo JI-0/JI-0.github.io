@@ -38,6 +38,25 @@ import 'swiper/css/bundle';
     }
     swiperInit();
     document.addEventListener("astro:after-swap", swiperInit);
+
+    function mobileAOS() {
+      let width = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+      );
+      if (width <= 600) {
+        let elements = document.getElementsByClassName("aos-card");
+        for (let i = 0; i < elements.length; i++) {
+           elements.item(i).setAttribute('data-aos', 'fade-in');
+        }
+      }
+    }
+    mobileAOS();
+    document.addEventListener("astro:after-swap", mobileAOS);
+
     var resizeTimer;
     window.onresize = () => {
       clearTimeout(resizeTimer);
@@ -49,7 +68,7 @@ import 'swiper/css/bundle';
 </div>
 <h2 data-aos="fade-in" data-aos-delay="300">Highlights</h2>
 <!-- <a href="/works/messaging_app_ui" class="highlight-link"> -->
-<!--     <div data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine"> -->
+<!--     <div class="aos-card" data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine"> -->
 <!--         <div class="highlight-r highlight"> -->
 <!--             <img class="highlight-img" alt="Messaging app UI" src="/messaging_app_ui.png"/> -->
 <!--             <div> -->
@@ -63,7 +82,7 @@ import 'swiper/css/bundle';
 <!--     </div> -->
 <!-- </a> -->
 <a href= "/works/sqisign_go_bindings" class="highlight-link">
-    <div data-aos="fade-up-right" data-aos-delay="300" data-aos-easing="ease-in-sine">
+    <div class="aos-card" data-aos="fade-up-right" data-aos-delay="300" data-aos-easing="ease-in-sine">
         <div class="highlight-l highlight">
             <div class="highlight-l-large">
                 <h2>SQIsign PQC for Go</h2>
@@ -86,7 +105,7 @@ import 'swiper/css/bundle';
     </div>
 </a>
 <a href="/works/trading_strategy" class="highlight-link">
-    <div data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine">
+    <div class="aos-card" data-aos="fade-up-left" data-aos-delay="300" data-aos-easing="ease-in-sine">
         <div class="highlight-r highlight">
             <img class="highlight-img" alt="Trading strategy testing in Pine Script" src="/trading.png"/>
             <div>
